@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "airbnb",
+    "slug": "airbnb",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/Logo_Airbnb.png",
+    "scheme": "airbnb",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/Logo_Airbnb.png",
+        "backgroundColor": "#FF5A5F"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/Logo_Airbnb.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/Logo_Airbnb.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#FF5A5F"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
