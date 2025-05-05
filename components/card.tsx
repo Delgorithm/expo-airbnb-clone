@@ -61,7 +61,7 @@ export default function LegendListCard({
             </View>
 
             <View style={{ flexDirection: "row", gap: 4, marginTop: 6 }}>
-              <Text style={{ fontWeight: 500 }}>{price}</Text>
+              <Text style={{ fontWeight: 500 }}>{price}$</Text>
               <Text style={{ fontWeight: 300 }}>total before taxes</Text>
             </View>
           </View>

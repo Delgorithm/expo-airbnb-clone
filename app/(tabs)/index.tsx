@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import {
   LegendList,
   LegendListRef,
@@ -7,6 +7,7 @@ import {
 } from "@legendapp/list";
 import listings from "@/assets/data/listings.json";
 import LegendListCard from "@/components/card";
+import InputSearch from "@/components/input-search";
 
 const PAGE_SIZE = 10;
 
@@ -49,8 +50,9 @@ export default function Page() {
         paddingTop: 48,
       }}
     >
+      <InputSearch />
       <LegendList
-        data={listings}
+        data={visibleData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         recycleItems={true}
