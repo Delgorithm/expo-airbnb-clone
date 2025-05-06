@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import {
   LegendList,
   LegendListRef,
@@ -8,6 +8,7 @@ import {
 import listings from "@/assets/data/listings.json";
 import LegendListCard from "@/components/card";
 import InputSearch from "@/components/input-search";
+import { Link, router } from "expo-router";
 
 const PAGE_SIZE = 10;
 
@@ -32,14 +33,24 @@ export default function Page() {
     item,
   }: LegendListRenderItemProps<(typeof listings)[0]>) => {
     return (
-      <LegendListCard
-        title={item.title}
-        city={item.city}
-        country={item.country}
-        price={item.price}
-        rating={item.rating}
-        image={item.image}
-      />
+      <Pressable
+        onPress={() => {
+          console.log("Tapped on card: ", item.id);
+          router.push({
+            pathname: "/details/[id]",
+            params: { id: item.id.toString() },
+          });
+        }}
+      >
+        <LegendListCard
+          title={item.title}
+          city={item.city}
+          country={item.country}
+          price={item.price}
+          rating={item.rating}
+          image={item.image}
+        />
+      </Pressable>
     );
   };
 
