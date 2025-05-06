@@ -53,7 +53,7 @@ export default function InputSearch() {
           style={{
             padding: 12,
             borderRadius: 9999,
-            borderWidth: 1,
+            borderWidth: 0.5,
             borderColor: "black",
           }}
         />
