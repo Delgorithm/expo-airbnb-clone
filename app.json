@@ -9,13 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.delgorithm.airbnb",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Permet à Airbnb Clone de vous géolocaliser pour trouver les logements les plus proches."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Logo_Airbnb.png",
         "backgroundColor": "#FF5A5F"
       },
+      "permissions": ["ACCESS_FINE_LOCATION"],
       "edgeToEdgeEnabled": true
     },
     "web": {
@@ -31,6 +36,12 @@
           "image": "./assets/images/Logo_Airbnb.png",
           "resizeMode": "contain",
           "backgroundColor": "#FF5A5F"
+        }
+      ],
+      [
+        "expo-maps",
+        {
+          "locationPermission": "Permet à Airbnb Clone d'utiliser votre localisation pour vous proposer les meilleurs logements."
         }
       ]
     ],
