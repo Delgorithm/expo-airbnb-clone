@@ -14,8 +14,14 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from "react-native-reanimated";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import AppleGoogleMap from "@/components/apple-google-map";
+import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -58,39 +64,56 @@ export default function DetailsPage() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, position: "relative", backgroundColor: "white" }}>
       {/* Header btn */}
       <View>
-        <Pressable onPress={() => router.back()} style={styles.button}>
+        <Pressable
+          onPress={() => router.back()}
+          style={{
+            position: "absolute",
+            top: 56,
+            left: 20,
+            zIndex: 999,
+            borderRadius: 999,
+          }}
+        >
           <Ionicons
             name="chevron-back-outline"
             size={20}
             color="black"
-            style={styles.arrowBack}
+            style={{ padding: 8, borderRadius: 999, backgroundColor: "white" }}
           />
         </Pressable>
         <View style={styles.viewMoreButtons}>
           <Pressable
             onPress={() => console.log("Share")}
-            style={styles.buttonShare}
+            style={{ position: "absolute", top: 56, right: 80, zIndex: 999 }}
           >
             <Ionicons
               name="share-outline"
               size={20}
               color="black"
-              style={styles.arrowBack}
+              style={{
+                padding: 8,
+                borderRadius: 999,
+                backgroundColor: "white",
+              }}
             />
           </Pressable>
 
           <Pressable
             onPress={() => console.log("Favoris")}
-            style={styles.buttonLike}
+            style={{ position: "absolute", top: 56, right: 20, zIndex: 999 }}
           >
             <Ionicons
               name="heart-outline"
               size={20}
               color="black"
-              style={styles.arrowBack}
+              style={{
+                padding: 8,
+                borderRadius: 999,
+                backgroundColor: "white",
+              }}
             />
           </Pressable>
         </View>
@@ -102,8 +125,8 @@ export default function DetailsPage() {
           source={{ uri: listing.image }}
           style={[styles.image, imageAnimatedStyle]}
         />
-        <View style={styles.containerSecond}>
-          <Text style={styles.title}>{listing.title}</Text>
+        <View style={{ padding: 24 }}>
+          <Text style={{ fontSize: 36, fontWeight: 500 }}>{listing.title}</Text>
           <Text style={styles.location}>
             {listing.city}, {listing.country}
           </Text>
@@ -186,7 +209,7 @@ export default function DetailsPage() {
         {/* Informations & badges */}
         <View
           style={{
-            marginHorizontal: 24,
+            marginHorizontal: 32,
             flexDirection: "row",
             alignItems: "center",
             gap: 20,
@@ -210,7 +233,7 @@ export default function DetailsPage() {
         />
         <View
           style={{
-            marginHorizontal: 24,
+            marginHorizontal: 32,
             flexDirection: "row",
             alignItems: "center",
             gap: 20,
@@ -235,7 +258,7 @@ export default function DetailsPage() {
         <View>
           <View
             style={{
-              marginHorizontal: 24,
+              marginHorizontal: 32,
               flexDirection: "row",
               alignItems: "center",
               gap: 20,
@@ -255,7 +278,7 @@ export default function DetailsPage() {
 
           <View
             style={{
-              marginHorizontal: 24,
+              marginHorizontal: 32,
               flexDirection: "row",
               alignItems: "center",
               gap: 20,
@@ -273,7 +296,7 @@ export default function DetailsPage() {
 
           <View
             style={{
-              marginHorizontal: 24,
+              marginHorizontal: 32,
               flexDirection: "row",
               alignItems: "center",
               gap: 20,
@@ -298,23 +321,24 @@ export default function DetailsPage() {
             backgroundColor: "gray",
           }}
         />
-        <Text style={{ margin: 24, letterSpacing: 0.98 }}>
+        <Text style={{ margin: 32, letterSpacing: 0.98 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
           aliquip ex ea commodo consequat.
         </Text>
+
         <View
           style={{
             height: 0.5,
-            marginHorizontal: 24,
             backgroundColor: "gray",
           }}
         />
-        <View
-          style={{ marginHorizontal: 24, marginVertical: 24, marginBottom: 80 }}
-        >
-          <Text>Où vous dormirez</Text>
+
+        <View style={{ margin: 32 }}>
+          <Text style={{ fontSize: 20, fontWeight: 500 }}>
+            Où vous dormirez
+          </Text>
           <View
             style={{
               flexDirection: "row",
@@ -331,7 +355,7 @@ export default function DetailsPage() {
                 transition={1000}
                 style={{
                   height: 100,
-                  width: 170,
+                  width: 160,
                   borderRadius: 16,
                 }}
               />
@@ -345,7 +369,7 @@ export default function DetailsPage() {
                 transition={1000}
                 style={{
                   height: 100,
-                  width: 170,
+                  width: 160,
                   borderRadius: 16,
                 }}
               />
@@ -353,120 +377,200 @@ export default function DetailsPage() {
             </View>
           </View>
         </View>
+
+        <View
+          style={{
+            height: 0.5,
+            backgroundColor: "gray",
+          }}
+        />
+
+        <View style={{ margin: 32, gap: 16 }}>
+          <Text style={{ fontSize: 20, fontWeight: 500 }}>
+            Ce que la place offre
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+            <MaterialCommunityIcons
+              name="silverware-fork-knife"
+              size={24}
+              color="black"
+            />
+            <Text style={{ fontSize: 16, fontWeight: 300 }}>Cuisine</Text>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+            <FontAwesome5 name="wifi" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: 300 }}>Wifi</Text>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+            <MaterialCommunityIcons name="desk" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: 300 }}>Bureau</Text>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+            <FontAwesome5 name="car" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: 300 }}>
+              Parking gratuit
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+            <FontAwesome5 name="camera" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: 300 }}>
+              Sécurité renforcée
+            </Text>
+          </View>
+
+          <Pressable
+            style={({ pressed }) => ({
+              borderWidth: 0.5,
+              paddingVertical: 16,
+              borderRadius: 6,
+              marginTop: 20,
+              opacity: pressed ? 0.6 : 1,
+            })}
+          >
+            <Text style={{ alignSelf: "center" }}>
+              Montrer les 55 commodités
+            </Text>
+          </Pressable>
+        </View>
+
+        <View
+          style={{
+            height: 0.5,
+            backgroundColor: "gray",
+          }}
+        />
+
+        <View style={{ margin: 32, gap: 16 }}>
+          <Text style={{ fontSize: 20, fontWeight: 500 }}>Où vous serez</Text>
+          <Text>
+            {listing.city}, {listing.country}
+          </Text>
+
+          <View style={{ borderRadius: 20 }}>
+            <AppleGoogleMap styling={{ height: 300, width: "100%" }} />
+          </View>
+        </View>
+
+        <View
+          style={{
+            height: 0.5,
+            backgroundColor: "gray",
+          }}
+        />
+
+        <View
+          style={{
+            position: "relative",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingVertical: 20,
+          }}
+        >
+          <LinearGradient
+            colors={["#F7F7F7", "#FEFEFE"]}
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              height: "auto",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 26,
+                marginTop: 26,
+              }}
+            >
+              <FontAwesome5
+                name="leaf"
+                size={50}
+                color="black"
+                style={{ transform: [{ scaleX: -1 }] }}
+              />
+
+              <Text style={{ fontSize: 60, fontWeight: 500 }}>
+                {listing.rating}
+              </Text>
+
+              <FontAwesome5 name="leaf" size={50} color="black" />
+            </View>
+          </LinearGradient>
+        </View>
       </Animated.ScrollView>
 
       {/* Footer Btn */}
-      <View style={styles.footerInfo}>
-        <View style={styles.footerInfoPrice}>
-          <Text style={styles.footerInfoPriceText}>
-            {listing.price} € / nuit
-          </Text>
-          <View style={styles.footerInfoPriceCancellation}>
-            <Ionicons name="checkmark-outline" size={10} color={"black"} />
-            <Text>Annulation gratuite</Text>
-          </View>
-        </View>
-        <Pressable style={styles.footerInfoBtn}>
-          <Text style={styles.footerInfoBtnText}>Réserver</Text>
-        </Pressable>
-      </View>
+      {/* <View */}
+      {/*   style={{ */}
+      {/*     position: "absolute", */}
+      {/*     bottom: 0, */}
+      {/*     left: 0, */}
+      {/*     flexDirection: "row", */}
+      {/*     justifyContent: "space-between", */}
+      {/*     alignItems: "center", */}
+      {/*     paddingHorizontal: 24, */}
+      {/*     paddingVertical: 16, */}
+      {/*     borderTopWidth: 0.5, */}
+      {/*     width: "100%", */}
+      {/*     backgroundColor: "white", */}
+      {/*   }} */}
+      {/* > */}
+      {/*   <View style={{ marginVertical: 14 }}> */}
+      {/*     <Text */}
+      {/*       style={{ */}
+      {/*         fontWeight: 500, */}
+      {/*         fontSize: 18, */}
+      {/*         textDecorationLine: "underline", */}
+      {/*       }} */}
+      {/*     > */}
+      {/*       {listing.price} € / nuit */}
+      {/*     </Text> */}
+      {/*     <View */}
+      {/*       style={{ */}
+      {/*         flexDirection: "row", */}
+      {/*         alignItems: "center", */}
+      {/*         gap: 10, */}
+      {/*         paddingHorizontal: 10, */}
+      {/*         paddingVertical: 4, */}
+      {/*         backgroundColor: "#E5E5E5", */}
+      {/*         borderRadius: 999, */}
+      {/*         marginTop: 4, */}
+      {/*       }} */}
+      {/*     > */}
+      {/*       <Ionicons name="checkmark-outline" size={16} color={"black"} /> */}
+      {/*       <Text>Annulation gratuite</Text> */}
+      {/*     </View> */}
+      {/*   </View> */}
+      {/*   <Pressable */}
+      {/*     style={({ pressed }) => ({ */}
+      {/*       backgroundColor: Colors.primary, */}
+      {/*       paddingVertical: 14, */}
+      {/*       paddingHorizontal: 44, */}
+      {/*       borderRadius: 8, */}
+      {/*       opacity: pressed ? 0.6 : 1, */}
+      {/*     })} */}
+      {/*   > */}
+      {/*     <Text style={{ color: "white", fontWeight: 600, fontSize: 16 }}> */}
+      {/*       Réserver */}
+      {/*     </Text> */}
+      {/*   </Pressable> */}
+      {/* </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-  },
-
-  button: {
-    position: "absolute",
-    top: 56,
-    left: 20,
-    zIndex: 999,
-    borderRadius: 999,
-  },
-
-  buttonLike: {
-    position: "absolute",
-    top: 56,
-    right: 20,
-    zIndex: 999,
-  },
-
-  buttonShare: {
-    position: "absolute",
-    top: 56,
-    right: 80,
-    zIndex: 999,
-  },
-
-  arrowBack: {
-    padding: 8,
-    borderRadius: 999,
-    backgroundColor: "white",
-  },
-
   image: {
     width: width,
     height: IMG_HEIGHT,
     zIndex: 998,
-  },
-
-  containerSecond: {
-    padding: 24,
-  },
-
-  title: {
-    fontSize: 36,
-    fontWeight: 500,
-  },
-
-  footerInfo: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderTopWidth: 0.5,
-    width: "100%",
-    backgroundColor: "white",
-  },
-
-  footerInfoPriceText: {
-    fontWeight: 500,
-    fontSize: 18,
-    textDecorationLine: "underline",
-  },
-
-  footerInfoPriceCancellation: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    backgroundColor: "#E5E5E5",
-    borderRadius: 999,
-  },
-
-  footerInfoPrice: {
-    marginTop: 14,
-  },
-
-  footerInfoBtn: {
-    backgroundColor: Colors.primary,
-    paddingVertical: 14,
-    paddingHorizontal: 44,
-    borderRadius: 8,
-  },
-
-  footerInfoBtnText: {
-    color: "white",
-    fontWeight: 600,
-    fontSize: 16,
   },
 });
