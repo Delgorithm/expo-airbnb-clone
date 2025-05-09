@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import {
   LegendList,
   LegendListRef,
@@ -8,7 +8,8 @@ import {
 import listings from "@/assets/data/listings.json";
 import LegendListCard from "@/components/card";
 import InputSearch from "@/components/input-search";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
+import CategoryList from "@/components/category-list";
 
 const PAGE_SIZE = 10;
 
@@ -59,9 +60,11 @@ export default function Page() {
       style={{
         flex: 1,
         paddingTop: 48,
+        backgroundColor: "white",
       }}
     >
       <InputSearch />
+      <CategoryList />
       <LegendList
         data={visibleData}
         renderItem={renderItem}
