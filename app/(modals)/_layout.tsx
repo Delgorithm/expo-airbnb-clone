@@ -9,6 +9,22 @@ export default function DetailsLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="category/[name]"
+        options={{
+          headerShown: false,
+          title: "Category",
+          presentation: "formSheet",
+          gestureDirection: "vertical",
+          animation: "slide_from_bottom",
+          sheetGrabberVisible: true,
+          sheetInitialDetentIndex: 0,
+          sheetAllowedDetents: [0.5, 0.75, 1],
+          sheetCornerRadius: 20,
+          sheetExpandsWhenScrolledToEdge: true,
+          sheetElevation: 24,
+        }}
+      />
     </Stack>
   );
 }
