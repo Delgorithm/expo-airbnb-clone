@@ -1,15 +1,22 @@
 import { locationList } from "@/assets/data/location-list";
 import { markers } from "@/assets/data/markers";
 import { useBottomTabOverflow } from "@/hooks/useBottomTabOverflow";
+import { Ionicons } from "@expo/vector-icons";
 import { AppleMaps, GoogleMaps } from "expo-maps";
 import { AppleMapsMapType } from "expo-maps/build/apple/AppleMaps.types";
 import { GoogleMapsMapType } from "expo-maps/build/google/GoogleMaps.types";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
-import { Button, Platform, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Button,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const SF_ZOOM = 20;
 
 export default function CategoryName() {
   const { name } = useLocalSearchParams();
@@ -17,6 +24,8 @@ export default function CategoryName() {
   const bottom = useBottomTabOverflow();
   const [locationIndex, setLocationIndex] = useState(0);
   const ref = useRef<AppleMaps.MapView>(null);
+
+  const SF_ZOOM = 8;
 
   const cameraPosition = {
     coordinates: {
@@ -28,7 +37,15 @@ export default function CategoryName() {
 
   function handleChangeWithRef(direction: "next" | "prev") {
     const newIndex = locationIndex + (direction === "next" ? 1 : -1);
-    const nextLocation = locationList[newIndex];
+    let finalIndex = newIndex;
+
+    if (newIndex < 0) {
+      finalIndex = locationList.length - 1;
+    } else if (newIndex >= locationList.length) {
+      finalIndex = 0;
+    }
+
+    const nextLocation = locationList[finalIndex];
 
     ref.current?.setCameraPosition({
       coordinates: {
@@ -38,15 +55,63 @@ export default function CategoryName() {
       zoom: SF_ZOOM,
     });
 
-    setLocationIndex(newIndex);
+    setLocationIndex(finalIndex);
   }
 
   const renderMapControls = () => (
     <>
       <View style={{ flex: 8 }} pointerEvents="auto" />
-      <View style={{}} pointerEvents="auto">
-        <Button title="Suivant" onPress={() => handleChangeWithRef("next")} />
-        <Button title="Précedent" onPress={() => handleChangeWithRef("prev")} />
+      <Pressable
+        onPress={() => router.back()}
+        style={{
+          position: "absolute",
+          top: 56,
+          left: 20,
+          zIndex: 999,
+          borderRadius: 999,
+        }}
+      >
+        <Ionicons
+          name="chevron-back-outline"
+          size={20}
+          color="black"
+          style={{ padding: 8, borderRadius: 999, backgroundColor: "white" }}
+        />
+      </Pressable>
+      <View
+        style={{
+          flex: 1.4,
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          gap: 10,
+          backgroundColor: "",
+        }}
+        pointerEvents="auto"
+      >
+        <Pressable
+          onPress={() => handleChangeWithRef("prev")}
+          style={{
+            paddingVertical: 12,
+            paddingHorizontal: 40,
+            backgroundColor: "white",
+            borderRadius: 4,
+          }}
+        >
+          <Text>Précédent</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => handleChangeWithRef("next")}
+          style={{
+            paddingVertical: 12,
+            paddingHorizontal: 40,
+            backgroundColor: "white",
+            borderRadius: 4,
+          }}
+        >
+          <Text>Suivant</Text>
+        </Pressable>
       </View>
     </>
   );
@@ -55,7 +120,9 @@ export default function CategoryName() {
     return (
       <React.Fragment>
         <AppleMaps.View
+          ref={ref}
           style={StyleSheet.absoluteFill}
+          cameraPosition={cameraPosition}
           properties={{
             isTrafficEnabled: false,
             mapType: AppleMapsMapType.STANDARD,
@@ -103,7 +170,36 @@ export default function CategoryName() {
             minZoomPreference: 1,
             maxZoomPreference: 20,
           }}
+          markers={markers}
+          onPolylineClick={(event) => {
+            console.log(event);
+            Alert.alert("Polyline clicked", JSON.stringify(event));
+          }}
+          onMapLoaded={() => {
+            console.log(JSON.stringify({ type: "onMapLoaded" }, null, 2));
+          }}
+          onMapClick={(e) => {
+            console.log(
+              JSON.stringify({ type: "onMapClick", data: e }, null, 2),
+            );
+          }}
+          onMapLongClick={(e) => {
+            console.log(
+              JSON.stringify({ type: "onMapLongClick", data: e }, null, 2),
+            );
+          }}
+          onPOIClick={(e) => {
+            console.log(
+              JSON.stringify({ type: "onPOIClick", data: e }, null, 2),
+            );
+          }}
+          onMarkerClick={(e) => {
+            console.log(
+              JSON.stringify({ type: "onMarkerClick", data: e }, null, 2),
+            );
+          }}
         />
+        {renderMapControls()}
       </>
     );
   } else {
