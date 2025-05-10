@@ -8,7 +8,7 @@ import {
 import listings from "@/assets/data/listings.json";
 import LegendListCard from "@/components/card";
 import InputSearch from "@/components/input-search";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import CategoryList from "@/components/category-list";
 
 const PAGE_SIZE = 10;
@@ -34,24 +34,25 @@ export default function Page() {
     item,
   }: LegendListRenderItemProps<(typeof listings)[0]>) => {
     return (
-      <Pressable
-        onPress={() => {
-          console.log("Tapped on card: ", item.id);
-          router.push({
-            pathname: "/details/[id]",
-            params: { id: item.id.toString() },
-          });
+      <Link
+        href={{
+          pathname: "/(modals)/details/[id]",
+          params: { id: item.id.toString() },
         }}
+        asChild
+        push
       >
-        <LegendListCard
-          title={item.title}
-          city={item.city}
-          country={item.country}
-          price={item.price}
-          rating={item.rating}
-          image={item.image}
-        />
-      </Pressable>
+        <Pressable>
+          <LegendListCard
+            title={item.title}
+            city={item.city}
+            country={item.country}
+            price={item.price}
+            rating={item.rating}
+            image={item.image}
+          />
+        </Pressable>
+      </Link>
     );
   };
 
