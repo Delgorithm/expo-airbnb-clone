@@ -17,6 +17,7 @@ import Informations from "@/components/ui/informations";
 import SecondBadge from "@/components/ui/second-badge";
 import LocationHouse from "@/components/ui/location-house";
 import FooterBtn from "@/components/ui/footer-btn";
+import { faker } from "@faker-js/faker";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -27,6 +28,8 @@ export default function DetailsPage() {
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+
+  const numberOfYearsAsHost = Math.floor(Math.random() * 8 + 1);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -113,10 +116,10 @@ export default function DetailsPage() {
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 600 }}
+        contentContainerStyle={{ paddingBottom: 2000 }}
       >
         <Animated.Image
-          source={{ uri: listing.image }}
+          source={faker.image.url()}
           style={[styles.image, imageAnimatedStyle]}
         />
 
@@ -126,7 +129,7 @@ export default function DetailsPage() {
 
         {/* Informations & badges */}
 
-        <SecondBadge />
+        <SecondBadge numberOfYearsAsHost={numberOfYearsAsHost} />
 
         <View
           style={{
@@ -179,7 +182,10 @@ export default function DetailsPage() {
           }}
         />
 
-        <GuestFavorite listing={listing} />
+        <GuestFavorite
+          listing={listing}
+          numberOfYearsAsHost={numberOfYearsAsHost}
+        />
       </Animated.ScrollView>
 
       <FooterBtn listing={listing} />
