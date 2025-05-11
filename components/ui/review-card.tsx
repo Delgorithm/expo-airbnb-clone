@@ -35,7 +35,15 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
         borderColor: "#DDDDDD",
       }}
     >
-      <View style={{ paddingHorizontal: 10, paddingVertical: 16, gap: 10 }}>
+      <View
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 12,
+          marginHorizontal: 8,
+          maxWidth: 350,
+          gap: 10,
+        }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
           <View style={{ flexDirection: "row", gap: 4 }}>
             {Array.from({ length: fullStars }).map((_, index) => (
