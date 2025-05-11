@@ -1,7 +1,7 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View } from "react-native";
-import PagerView from "react-native-pager-view";
+import { ScrollView, Text, View } from "react-native";
+import ReviewCard from "./review-card";
 
 type GuestFavoriteProps = {
   listing: {
@@ -11,6 +11,11 @@ type GuestFavoriteProps = {
 
 export default function GuestFavorite({ listing }: GuestFavoriteProps) {
   if (!listing || !listing.rating) return null;
+
+  const reviews = Array.from({ length: 5 }).map(() => ({
+    rating: Math.random() * 5,
+    reviews: Math.floor(Math.random() * 100),
+  }));
 
   return (
     <View
@@ -54,29 +59,35 @@ export default function GuestFavorite({ listing }: GuestFavoriteProps) {
 
           <FontAwesome5 name="leaf" size={50} color="black" />
         </View>
-      </LinearGradient>
+        <View
+          style={{
+            alignSelf: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Text>Dans les favoris</Text>
+          <View style={{ alignItems: "center", gap: 2 }}>
+            <Text style={{ fontWeight: 200 }}>
+              L&apos;un des endroits les plus appréciés sur AirBnb
+            </Text>
+            <Text style={{ fontWeight: 200 }}>
+              se basant sur les notes, les avis et les compatibilités
+            </Text>
+          </View>
+        </View>
 
-      <PagerView initialPage={0}>
-        <View
-          style={{ height: 200, width: 200, backgroundColor: "black" }}
-          key="1"
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 24 }}
         >
-          <Text>First page</Text>
-          <Text>Swipe ➡️</Text>
-        </View>
-        <View
-          style={{ height: 200, width: 200, backgroundColor: "red" }}
-          key="2"
-        >
-          <Text>Second page</Text>
-        </View>
-        <View
-          style={{ height: 200, width: 200, backgroundColor: "green" }}
-          key="3"
-        >
-          <Text>Third page</Text>
-        </View>
-      </PagerView>
+          {reviews.map((review, index) => (
+            <ReviewCard key={index} listing={review} />
+          ))}
+        </ScrollView>
+      </LinearGradient>
     </View>
   );
 }
