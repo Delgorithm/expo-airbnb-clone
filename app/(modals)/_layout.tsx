@@ -25,6 +25,21 @@ export default function DetailsLayout() {
           sheetElevation: 24,
         }}
       />
+      <Stack.Screen
+        name="reservation/[reservationModal]"
+        options={{
+          headerShown: false,
+          title: "Réservation",
+          presentation: "formSheet",
+          gestureDirection: "vertical",
+          animation: "slide_from_bottom",
+          sheetGrabberVisible: true,
+          sheetAllowedDetents: [0.5],
+          sheetCornerRadius: 20,
+          sheetExpandsWhenScrolledToEdge: true,
+          sheetElevation: 24,
+        }}
+      />
     </Stack>
   );
 }

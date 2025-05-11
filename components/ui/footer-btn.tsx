@@ -1,14 +1,17 @@
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 type FooterBtnProps = {
   listing: {
     price: number;
+    title: string;
   };
 };
 
 export default function FooterBtn({ listing }: FooterBtnProps) {
+  if (!listing || !listing.price || !listing.title) return null;
   return (
     <View
       style={{
@@ -51,19 +54,35 @@ export default function FooterBtn({ listing }: FooterBtnProps) {
           <Text>Annulation gratuite</Text>
         </View>
       </View>
-      <Pressable
-        style={({ pressed }) => ({
+      <Link
+        href={{
+          pathname: "/(modals)/reservation/[reservationModal]",
+          params: {
+            title: listing.title,
+            price: listing.price.toString(),
+          },
+        }}
+        style={{
           backgroundColor: Colors.primary,
           paddingVertical: 14,
           paddingHorizontal: 44,
           borderRadius: 8,
-          opacity: pressed ? 0.6 : 1,
-        })}
+        }}
+        asChild
+        push
       >
-        <Text style={{ color: "white", fontWeight: 600, fontSize: 16 }}>
-          Réserver
-        </Text>
-      </Pressable>
+        <Pressable>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: 600,
+              fontSize: 16,
+            }}
+          >
+            Réserver
+          </Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }
