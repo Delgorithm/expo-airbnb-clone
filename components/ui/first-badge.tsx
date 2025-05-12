@@ -9,10 +9,10 @@ type FirstBadgeProps = {
 };
 
 export default function FirstBadge({ listing }: FirstBadgeProps) {
+  if (!listing || !listing.rating || !listing.reviews) return null;
+
   const fullStars = Math.floor(listing.rating);
   const hasHalfStar = listing.rating % 1 >= 0.5;
-
-  if (!listing || !listing.rating || !listing.reviews) return null;
 
   return (
     <View

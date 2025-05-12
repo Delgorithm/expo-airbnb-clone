@@ -7,8 +7,8 @@ type AppleGoogleMapProps = {
 
 export default function AppleGoogleMap({ styling }: AppleGoogleMapProps) {
   const staticCoords = {
-    latitude: 45.14218284492509,
-    longitude: -0.388456620911506,
+    latitude: 42.98333,
+    longitude: -0.41667,
   };
 
   const cameraPosition = {

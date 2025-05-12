@@ -1,12 +1,13 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import ReviewCard from "./review-card";
 import HostCard from "./host-card";
 
 type GuestFavoriteProps = {
   listing: {
     rating: number;
+    reviews: number;
   };
   numberOfYearsAsHost: number;
 };
@@ -93,6 +94,32 @@ export default function GuestFavorite({
           ))}
         </ScrollView>
 
+        <Pressable
+          style={({ pressed }) => [
+            {
+              marginHorizontal: 24,
+              marginBottom: 26,
+              borderWidth: 0.5,
+              paddingVertical: 12,
+              borderRadius: 8,
+              opacity: pressed ? 0.6 : 1,
+              backgroundColor: pressed ? "gray" : "white",
+            },
+          ]}
+        >
+          {({ pressed }) => (
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: 16,
+                fontWeight: 500,
+                color: pressed ? "white" : "black",
+              }}
+            >
+              Afficher les {listing.reviews} avis
+            </Text>
+          )}
+        </Pressable>
         <View
           style={{
             height: 0.5,

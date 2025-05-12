@@ -22,7 +22,6 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
 
   let randomNumber = Math.ceil(Math.random() * (10, 1) + 1);
   let randomWeeks = Math.ceil(Math.random() * 10);
-  let randomStar = Math.random() * 5;
 
   return (
     <View
@@ -68,6 +67,7 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
             {isExpanded ? "Réduire" : "En savoir plus"}
           </Text>
         </Pressable>
+
         <View
           style={{
             flexDirection: "row",
