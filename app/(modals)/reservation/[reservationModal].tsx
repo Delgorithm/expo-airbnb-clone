@@ -84,25 +84,31 @@ export default function ReservationModal() {
           </Text>
         </View>
         <Pressable
-          style={{
-            paddingHorizontal: 10,
-            paddingVertical: 6,
-            backgroundColor: "#E2E2E2",
-            borderRadius: 6,
-          }}
+          style={({ pressed }) => [
+            {
+              paddingHorizontal: 10,
+              paddingVertical: 6,
+              backgroundColor: "#E2E2E2",
+              borderRadius: 6,
+              opacity: pressed ? 0.6 : 1,
+            },
+          ]}
         >
           <Text>Changer</Text>
         </Pressable>
       </View>
 
       <Pressable
-        style={{
-          backgroundColor: Colors.primary,
-          paddingVertical: 14,
-          paddingHorizontal: 44,
-          borderRadius: 8,
-          marginTop: 24,
-        }}
+        style={({ pressed }) => [
+          {
+            backgroundColor: Colors.primary,
+            paddingVertical: 14,
+            paddingHorizontal: 44,
+            borderRadius: 8,
+            marginTop: 24,
+            opacity: pressed ? 0.6 : 1,
+          },
+        ]}
       >
         <Text
           style={{

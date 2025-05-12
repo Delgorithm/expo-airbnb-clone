@@ -119,7 +119,7 @@ export default function DetailsPage() {
         contentContainerStyle={{ paddingBottom: 2000 }}
       >
         <Animated.Image
-          source={faker.image.url()}
+          source={{ uri: faker.image.urlLoremFlickr() }}
           style={[styles.image, imageAnimatedStyle]}
         />
 
@@ -155,7 +155,7 @@ export default function DetailsPage() {
           }}
         />
 
-        <WhereYouSleep listing={listing} />
+        <WhereYouSleep />
 
         <View
           style={{
