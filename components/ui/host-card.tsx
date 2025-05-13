@@ -25,6 +25,7 @@ export default function HostCard({
   if (!listing || !listing.rating || !listing.reviews) return null;
 
   const randomRateAnswer = Math.floor(Math.random() * (100 - 90) + 90);
+  const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
 
   return (
     <React.Fragment>
@@ -171,22 +172,15 @@ export default function HostCard({
               fontWeight: 600,
             }}
           >
-            Contacter l'hote
+            Contacter l&apos;hote
           </Text>
         </Pressable>
-
-        <View>
-          <Image
-            source="@/assets/images/Logo_Airbnb.png"
-            style={{ height: 10, width: 10 }}
-          />
-        </View>
       </View>
 
       <Link
         href={{
-          pathname: "/(modals)/calendar/[calendarModal]",
-          params: { calendarModal: "Disponibilités" },
+          pathname: "/(modals)/form/[reservationModal]",
+          params: { reservationModal: "Disponibilités" },
         }}
         style={{
           flexDirection: "row",
@@ -203,6 +197,7 @@ export default function HostCard({
             alignItems: "center",
             width: "100%",
             paddingVertical: 20,
+            paddingBottom: 20,
             borderBottomWidth: 0.5,
             borderColor: "#E2E2E2",
           }}
@@ -236,7 +231,7 @@ export default function HostCard({
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            paddingVertical: 20,
+            paddingBottom: 20,
             borderBottomWidth: 0.5,
             borderColor: "#E2E2E2",
           }}
@@ -251,6 +246,57 @@ export default function HostCard({
           <FontAwesome6 name="chevron-right" size={20} />
         </Pressable>
       </Link>
+
+      <View
+        style={{
+          gap: 6,
+          paddingBottom: 20,
+          borderBottomWidth: 0.5,
+          borderColor: "#E2E2E2",
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: 500 }}>
+          Règles de la propriété
+        </Text>
+        <Text style={{ fontWeight: 200 }}>Check-in après 16h00</Text>
+        <Text style={{ fontWeight: 200 }}>Check-out avant 11h00</Text>
+        <Text style={{ fontWeight: 200 }}>
+          {randomGuestAllowed} invités maximum
+        </Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 500,
+            textDecorationLine: "underline",
+          }}
+        >
+          En savoir plus
+        </Text>
+      </View>
+
+      <View
+        style={{
+          gap: 6,
+          paddingBottom: 20,
+          borderBottomWidth: 0.5,
+          borderColor: "#E2E2E2",
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: 500 }}>
+          Sécurité & Propriété
+        </Text>
+        <Text style={{ fontWeight: 200 }}>L&apos;extérieur a des caméras</Text>
+        <Text style={{ fontWeight: 200 }}>Lacs et rivières proches</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 500,
+            textDecorationLine: "underline",
+          }}
+        >
+          En savoir plus
+        </Text>
+      </View>
     </React.Fragment>
   );
 }
