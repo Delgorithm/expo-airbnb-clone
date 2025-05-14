@@ -1,5 +1,5 @@
-import { SafeAreaView, Text, View } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { SafeAreaView } from "react-native";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import CalendarFormStep from "@/components/form/calendar-form-step";
 import GuestFormStep from "@/components/form/guest-form-step";

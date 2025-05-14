@@ -55,7 +55,6 @@ export default function DetailsLayout() {
           sheetAllowedDetents: [0.65],
           sheetCornerRadius: 20,
           sheetExpandsWhenScrolledToEdge: true,
-          sheetElevation: 24,
         }}
       />
 
@@ -68,7 +67,7 @@ export default function DetailsLayout() {
           gestureDirection: "vertical",
           animation: "slide_from_bottom",
           sheetGrabberVisible: true,
-          sheetAllowedDetents: [0.5, 0.85],
+          sheetAllowedDetents: [0.65],
           sheetCornerRadius: 20,
           sheetExpandsWhenScrolledToEdge: true,
           sheetElevation: 24,
