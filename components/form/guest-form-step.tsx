@@ -2,6 +2,8 @@ import { Control } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GuestCounterRow from "./guest-counter-row";
+import { router } from "expo-router";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 
 type GuestFormStepProps = {
   control: Control<any>;
@@ -19,22 +21,38 @@ export default function GuestFormStep({
       style={{
         flex: 1,
         paddingHorizontal: 20,
+        paddingBottom: 200,
         borderRadius: 20,
         backgroundColor: "white",
       }}
     >
-      <View style={{ flex: 1 }}>
-        <Text
+      <View style={{ flex: 1, position: "relative" }}>
+        <View
           style={{
-            padding: 32,
-            paddingBottom: 16,
-            fontSize: 20,
-            fontWeight: 600,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: 32,
           }}
         >
-          Combien de personnes
-        </Text>
+          <Pressable onPress={() => setStep("calendar")}>
+            <Ionicons name="arrow-back" size={24} />
+          </Pressable>
 
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: "600",
+              textAlign: "center",
+            }}
+          >
+            Combien de personnes
+          </Text>
+
+          <Pressable onPress={() => router.back()}>
+            <FontAwesome6 name="xmark" size={24} />
+          </Pressable>
+        </View>
         <GuestCounterRow
           control={control}
           name="adults"

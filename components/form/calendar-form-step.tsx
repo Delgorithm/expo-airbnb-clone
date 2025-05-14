@@ -8,6 +8,8 @@ import {
   UseFormGetValues,
   useWatch,
 } from "react-hook-form";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 LocaleConfig.locales["fr"] = {
   monthNames: [
@@ -64,7 +66,6 @@ type CalendarFormStepProps = {
 export default function CalendarFormStep({
   control,
   setValue,
-  getValues,
   setStep,
 }: CalendarFormStepProps) {
   const initialDate = new Date().toISOString().split("T")[0];
@@ -131,20 +132,45 @@ export default function CalendarFormStep({
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "white", borderRadius: 20 }}
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        borderRadius: 20,
+        paddingBottom: 200,
+      }}
     >
-      <View style={{ flex: 1 }}>
-        <Text
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          paddingTop: 32,
+          paddingBottom: 16,
+        }}
+      >
+        <View
           style={{
-            paddingHorizontal: 20,
-            paddingTop: 32,
-            paddingBottom: 16,
-            fontSize: 26,
-            fontWeight: "600",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginHorizontal: 24,
           }}
         >
-          Quand partez-vous ?
-        </Text>
+          <View />
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: "600",
+              textAlign: "center",
+            }}
+          >
+            Quand partez-vous ?
+          </Text>
+
+          <Pressable onPress={() => router.back()}>
+            <FontAwesome6 name="xmark" size={24} />
+          </Pressable>
+        </View>
 
         <View
           style={{
