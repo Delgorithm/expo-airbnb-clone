@@ -1,16 +1,15 @@
-import { faker } from "@faker-js/faker";
-import { Pressable, Text, View } from "react-native";
+import { Text, View, Pressable } from "react-native";
+import { Link } from "expo-router";
 import { Image } from "expo-image";
+import { faker } from "@faker-js/faker";
 import {
   FontAwesome5,
   FontAwesome6,
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import React from "react";
-import { Link } from "expo-router";
 
-type HostCardProps = {
+type MeetYourHostProps = {
   listing: {
     rating: number;
     reviews: number;
@@ -18,17 +17,21 @@ type HostCardProps = {
   numberOfYearsAsHost: number;
 };
 
-export default function HostCard({
+export default function MeetYourHost({
   listing,
   numberOfYearsAsHost,
-}: HostCardProps) {
+}: MeetYourHostProps) {
   if (!listing || !listing.rating || !listing.reviews) return null;
 
   const randomRateAnswer = Math.floor(Math.random() * (100 - 90) + 90);
   const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
 
   return (
-    <React.Fragment>
+    <View style={{ margin: 24, gap: 20, marginTop: 520 }}>
+      <Text style={{ fontSize: 20, fontWeight: 500 }}>
+        Rencontrez votre hote
+      </Text>
+
       <View
         style={{
           flexDirection: "row",
@@ -179,8 +182,8 @@ export default function HostCard({
 
       <Link
         href={{
-          pathname: "/(modals)/form/[reservationModal]",
-          params: { reservationModal: "Disponibilités" },
+          pathname: "/(modals)/form/[formModal]",
+          params: { formModal: "Disponibilités" },
         }}
         style={{
           flexDirection: "row",
@@ -297,6 +300,6 @@ export default function HostCard({
           En savoir plus
         </Text>
       </View>
-    </React.Fragment>
+    </View>
   );
 }

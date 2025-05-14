@@ -2,20 +2,15 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import ReviewCard from "./review-card";
-import HostCard from "./host-card";
 
 type GuestFavoriteProps = {
   listing: {
     rating: number;
     reviews: number;
   };
-  numberOfYearsAsHost: number;
 };
 
-export default function GuestFavorite({
-  listing,
-  numberOfYearsAsHost,
-}: GuestFavoriteProps) {
+export default function GuestFavorite({ listing }: GuestFavoriteProps) {
   if (!listing || !listing.rating) return null;
 
   const reviews = Array.from({ length: 5 }).map(() => ({
@@ -87,7 +82,7 @@ export default function GuestFavorite({
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 24 }}
+          contentContainerStyle={{}}
         >
           {reviews.map((review, index) => (
             <ReviewCard key={index} listing={review} />
@@ -127,16 +122,6 @@ export default function GuestFavorite({
             marginHorizontal: 24,
           }}
         />
-
-        <View style={{ margin: 24, gap: 20 }}>
-          <Text style={{ fontSize: 20, fontWeight: 500 }}>
-            Rencontrez votre hote
-          </Text>
-          <HostCard
-            listing={listing}
-            numberOfYearsAsHost={numberOfYearsAsHost}
-          />
-        </View>
       </LinearGradient>
     </View>
   );

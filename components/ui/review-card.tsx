@@ -20,13 +20,13 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
     160,
   );
 
-  let randomNumber = Math.ceil(Math.random() * (10, 1) + 1);
+  let randomNumber = Math.ceil(Math.random() * 1 + 1);
   let randomWeeks = Math.ceil(Math.random() * 10);
 
   return (
     <View
       style={{
-        marginHorizontal: 24,
+        marginHorizontal: 8,
         marginVertical: 28,
         backgroundColor: "white",
         borderWidth: 0.5,
@@ -37,13 +37,18 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
       <View
         style={{
           paddingHorizontal: 10,
-          paddingVertical: 12,
-          marginHorizontal: 8,
+          paddingVertical: 10,
           maxWidth: 350,
           gap: 10,
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
           <View style={{ flexDirection: "row", gap: 4 }}>
             {Array.from({ length: fullStars }).map((_, index) => (
               <Ionicons key={index} name="star" size={8} color="black" />
@@ -67,7 +72,6 @@ export default function ReviewCard({ listing }: ReviewCardProps) {
             {isExpanded ? "Réduire" : "En savoir plus"}
           </Text>
         </Pressable>
-
         <View
           style={{
             flexDirection: "row",
