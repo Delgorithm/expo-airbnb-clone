@@ -9,6 +9,7 @@ export default function DetailsLayout() {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="category/[name]"
         options={{
@@ -25,6 +26,7 @@ export default function DetailsLayout() {
           sheetElevation: 24,
         }}
       />
+
       <Stack.Screen
         name="reservation/[reservationModal]"
         options={{
@@ -35,6 +37,37 @@ export default function DetailsLayout() {
           animation: "slide_from_bottom",
           sheetGrabberVisible: true,
           sheetAllowedDetents: [0.5],
+          sheetCornerRadius: 20,
+          sheetExpandsWhenScrolledToEdge: true,
+          sheetElevation: 24,
+        }}
+      />
+
+      <Stack.Screen
+        name="form/[formModal]"
+        options={{
+          headerShown: false,
+          title: "Calendrier",
+          presentation: "formSheet",
+          gestureDirection: "vertical",
+          animation: "slide_from_bottom",
+          sheetGrabberVisible: true,
+          sheetAllowedDetents: [0.65],
+          sheetCornerRadius: 20,
+          sheetExpandsWhenScrolledToEdge: true,
+        }}
+      />
+
+      <Stack.Screen
+        name="cancellation/[cancellationModal]"
+        options={{
+          headerShown: false,
+          title: "Annulation",
+          presentation: "formSheet",
+          gestureDirection: "vertical",
+          animation: "slide_from_bottom",
+          sheetGrabberVisible: true,
+          sheetAllowedDetents: [0.65],
           sheetCornerRadius: 20,
           sheetExpandsWhenScrolledToEdge: true,
           sheetElevation: 24,

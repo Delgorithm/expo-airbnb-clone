@@ -1,17 +1,7 @@
+import { faker } from "@faker-js/faker";
 import { Image, Text, View } from "react-native";
 
-type WhereYouSleepProps = {
-  listing: {
-    image: string;
-  };
-};
-
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
-
-export default function WhereYouSleep({ listing }: WhereYouSleepProps) {
-  if (!listing || !listing.image) return null;
-
+export default function WhereYouSleep() {
   return (
     <View style={{ margin: 32 }}>
       <Text style={{ fontSize: 20, fontWeight: 500 }}>Où vous dormirez</Text>
@@ -25,8 +15,7 @@ export default function WhereYouSleep({ listing }: WhereYouSleepProps) {
       >
         <View>
           <Image
-            source={{ uri: listing.image }}
-            placeholder={{ blurhash }}
+            source={{ uri: faker.image.url() }}
             contentFit="cover"
             transition={1000}
             style={{
@@ -39,8 +28,7 @@ export default function WhereYouSleep({ listing }: WhereYouSleepProps) {
         </View>
         <View>
           <Image
-            source={{ uri: listing.image }}
-            placeholder={{ blurhash }}
+            source={{ uri: faker.image.url() }}
             contentFit="cover"
             transition={1000}
             style={{
