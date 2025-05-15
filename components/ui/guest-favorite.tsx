@@ -1,7 +1,9 @@
-import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import ReviewCard from "./review-card";
+import { Image } from "expo-image";
+import houseImage from "@/assets/images/house.png";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 type GuestFavoriteProps = {
   listing: {
@@ -54,9 +56,7 @@ export default function GuestFavorite({ listing }: GuestFavoriteProps) {
             style={{ transform: [{ scaleX: -1 }] }}
           />
 
-          <Text style={{ fontSize: 60, fontWeight: 500 }}>
-            {listing.rating}
-          </Text>
+          <Image source={houseImage} style={{ height: 150, width: 150 }} />
 
           <FontAwesome5 name="leaf" size={50} color="black" />
         </View>
