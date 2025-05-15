@@ -27,7 +27,7 @@ export default function MeetYourHost({
   const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
 
   return (
-    <View style={{ margin: 24, gap: 20, marginTop: 520 }}>
+    <View style={{ margin: 24, gap: 20, marginTop: 610 }}>
       <Text style={{ fontSize: 20, fontWeight: 500 }}>
         Rencontrez votre hote
       </Text>
