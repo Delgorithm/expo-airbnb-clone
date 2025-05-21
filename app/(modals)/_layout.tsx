@@ -73,6 +73,22 @@ export default function DetailsLayout() {
           sheetElevation: 24,
         }}
       />
+
+      <Stack.Screen
+        name="parameters/[parametersModal]"
+        options={{
+          headerShown: false,
+          title: "Paramètres",
+          presentation: "formSheet",
+          gestureDirection: "vertical",
+          animation: "slide_from_bottom",
+          sheetGrabberVisible: true,
+          sheetAllowedDetents: [0.25, 0.65, 0.85],
+          sheetCornerRadius: 20,
+          sheetExpandsWhenScrolledToEdge: true,
+          sheetElevation: 24,
+        }}
+      />
     </Stack>
   );
 }
