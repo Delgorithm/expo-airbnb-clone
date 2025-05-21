@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 export default function ReservationModal() {
-  const { title, price } = useLocalSearchParams();
+  const { price } = useLocalSearchParams();
   const numberOfNights = 4;
   const totalPrice = price * numberOfNights;
   const serviceAirbnb = Math.ceil(totalPrice * 0.2);
