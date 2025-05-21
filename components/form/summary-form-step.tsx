@@ -1,5 +1,3 @@
-import { calculateNumberOfNights } from "@/lib/calculateNumberOfNights";
-import formatDateFr from "@/lib/formatDateFr";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { faker } from "@faker-js/faker";
 import { Image } from "expo-image";
@@ -7,6 +5,8 @@ import { router } from "expo-router";
 import { Control, useWatch } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import Separator from "../ui/separator";
+import formatDateFr from "@/lib/format-date-fr";
+import { calculateNumberOfNights } from "@/lib/calculate-number-of-nights";
 
 type SummaryFormStepProps = {
   control: Control<any>;
