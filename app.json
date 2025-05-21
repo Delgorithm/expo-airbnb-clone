@@ -11,6 +11,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.delgorithm.airbnb",
+      "associatedDomains": [
+        "applinks:trusty-shark-46.clerk.accounts.dev",
+        "webcredentials:trusty-shark-46.clerk.accounts.dev"
+      ],
+      "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Permet à Airbnb Clone de vous géolocaliser pour trouver les logements les plus proches."
       }
@@ -20,8 +25,9 @@
         "foregroundImage": "./assets/images/Logo_Airbnb.png",
         "backgroundColor": "#FF5A5F"
       },
-      "permissions": ["ACCESS_FINE_LOCATION"],
-      "edgeToEdgeEnabled": true
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "edgeToEdgeEnabled": true,
+      "package": "com.delgorithm.airbnb"
     },
     "web": {
       "bundler": "metro",
@@ -42,6 +48,33 @@
         "expo-maps",
         {
           "locationPermission": "Permet à Airbnb Clone d'utiliser votre localisation pour vous proposer les meilleurs logements."
+        }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
+          }
+        }
+      ],
+      "expo-secure-store",
+      "expo-apple-authentication",
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.0"
+          }
         }
       ]
     ],
