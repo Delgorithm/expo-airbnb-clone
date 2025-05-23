@@ -8,9 +8,18 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
+import * as SQLite from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { eq } from "drizzle-orm";
+import { reservations } from "@/db/schema";
+import { useEffect, useState } from "react";
+import formatDateFr from "@/lib/format-date-fr";
+
+const db = drizzle(SQLite.openDatabaseSync("db.db"));
 
 type MeetYourHostProps = {
   listing: {
+    id: number;
     rating: number;
     reviews: number;
   };
@@ -21,13 +30,38 @@ export default function MeetYourHost({
   listing,
   numberOfYearsAsHost,
 }: MeetYourHostProps) {
+  const [dateReservation, setDateReservation] = useState<null | {
+    startDate: string;
+    endDate: string;
+  }>(null);
+
   if (!listing || !listing.rating || !listing.reviews) return null;
 
   const randomRateAnswer = Math.floor(Math.random() * (100 - 90) + 90);
   const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
 
+  useEffect(() => {
+    const fetchReservation = async () => {
+      const result = db
+        .select({
+          startDate: reservations.startDate,
+          endDate: reservations.endDate,
+        })
+        .from(reservations)
+        .where(eq(reservations.listingId, listing.id))
+        .limit(1)
+        .get();
+
+      if (result) {
+        setDateReservation(result);
+      }
+    };
+
+    fetchReservation();
+  }, [listing.id]);
+
   return (
-    <View style={{ margin: 24, gap: 20, marginTop: 610 }}>
+    <View style={{ margin: 24, gap: 20, marginTop: 600 }}>
       <Text style={{ fontSize: 20, fontWeight: 500 }}>
         Rencontrez votre hote
       </Text>
@@ -123,7 +157,9 @@ export default function MeetYourHost({
       <View style={{ gap: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <FontAwesome5 name="heart" size={20} />
-          <Text style={{ fontSize: 16 }}>J'aime: {faker.book.series()}</Text>
+          <Text style={{ fontSize: 16 }}>
+            J&apos;aime: {faker.book.series()}
+          </Text>
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
@@ -183,7 +219,7 @@ export default function MeetYourHost({
       <Link
         href={{
           pathname: "/(modals)/form/[formModal]",
-          params: { formModal: "Disponibilités" },
+          params: { formModal: listing.id.toString() },
         }}
         style={{
           flexDirection: "row",
@@ -209,7 +245,14 @@ export default function MeetYourHost({
             <Text style={{ fontSize: 20, fontWeight: 500 }}>
               Disponibilitées
             </Text>
-            <Text style={{ fontWeight: 200 }}>Date</Text>
+            {dateReservation ? (
+              <Text style={{ fontWeight: 200 }}>
+                {formatDateFr({ dateString: dateReservation.startDate })} -{" "}
+                {formatDateFr({ dateString: dateReservation.endDate })}
+              </Text>
+            ) : (
+              <Text style={{ fontWeight: 200 }}>Date</Text>
+            )}
           </View>
           <FontAwesome6 name="chevron-right" size={20} />
         </Pressable>

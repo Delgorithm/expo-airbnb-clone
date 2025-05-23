@@ -5,11 +5,10 @@ import { Pressable, View } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { eq, and } from "drizzle-orm";
 import { useUser } from "@/lib/clerk";
-import { wishlists, users } from "@/db/schema";
+import { wishlists } from "@/db/schema";
 import { useEffect, useState } from "react";
 
 const expo = SQLite.openDatabaseSync("db.db");
-
 const db = drizzle(expo);
 
 type HeaderButtonsProps = {
@@ -24,7 +23,6 @@ export default function HeaderButtons({ listing }: HeaderButtonsProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const { user } = useUser();
-  const wishlistInDB = db.select().from(wishlists).all();
 
   useEffect(() => {
     const checkWishlist = async () => {

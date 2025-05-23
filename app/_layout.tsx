@@ -3,8 +3,13 @@ import { SplashScreen, Stack } from "expo-router";
 import "react-native-reanimated";
 import { useEffect } from "react";
 import { ClerkProvider } from "@clerk/clerk-expo";
+import { openDatabaseSync } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
 
 SplashScreen.preventAutoHideAsync();
+
+const expoDb = openDatabaseSync("db.db");
+const db = drizzle(expoDb);
 
 export default function RootLayout() {
   const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;

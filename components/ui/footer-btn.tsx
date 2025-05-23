@@ -1,17 +1,63 @@
 import { Colors } from "@/constants/Colors";
+import { reservations } from "@/db/schema";
+import { useUser } from "@/lib/clerk";
 import { Ionicons } from "@expo/vector-icons";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import * as SQLite from "expo-sqlite";
 import { Link } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
+
+const db = drizzle(SQLite.openDatabaseSync("db.db"));
 
 type FooterBtnProps = {
   listing: {
+    id: number;
     price: number;
     title: string;
   };
 };
 
 export default function FooterBtn({ listing }: FooterBtnProps) {
+  const { user } = useUser();
+  const [hasReservation, setHasReservation] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchReservation = async () => {
+      const result = db
+        .select({
+          listingId: reservations.listingId,
+        })
+        .from(reservations)
+        .where(eq(reservations.listingId, listing.id))
+        .limit(1)
+        .get();
+
+      if (result) {
+        setHasReservation(result);
+      }
+    };
+    fetchReservation();
+  }, [listing.id]);
+
   if (!listing || !listing.price || !listing.title) return null;
+
+  const linkHref = hasReservation
+    ? {
+        pathname: "/(modals)/reservation/[reservationModal]",
+        params: {
+          id: listing.id,
+          price: listing.price.toString(),
+        },
+      }
+    : {
+        pathname: "/(modals)/form/[formModal]",
+        params: {
+          formModal: listing.id.toString(),
+        },
+      };
+
   return (
     <View
       style={{
@@ -55,13 +101,7 @@ export default function FooterBtn({ listing }: FooterBtnProps) {
         </View>
       </View>
       <Link
-        href={{
-          pathname: "/(modals)/reservation/[reservationModal]",
-          params: {
-            title: listing.title,
-            price: listing.price.toString(),
-          },
-        }}
+        href={linkHref}
         style={{
           backgroundColor: Colors.primary,
           paddingVertical: 14,
@@ -79,7 +119,7 @@ export default function FooterBtn({ listing }: FooterBtnProps) {
               fontSize: 16,
             }}
           >
-            Réserver
+            {hasReservation ? "Réservation" : "Réserver"}
           </Text>
         </Pressable>
       </Link>
