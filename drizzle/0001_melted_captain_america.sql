@@ -8,12 +8,10 @@ CREATE TABLE `__new_listings` (
 	`latitude` real,
 	`longitude` real,
 	`image` text,
-	`user_id` text NOT NULL,
-	`created_at` integer DEFAULT 1747398025630,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+	`created_at` integer DEFAULT 1747995401472
 );
 --> statement-breakpoint
-INSERT INTO `__new_listings`("id", "title", "description", "price", "location", "latitude", "longitude", "image", "user_id", "created_at") SELECT "id", "title", "description", "price", "location", "latitude", "longitude", "image", "user_id", "created_at" FROM `listings`;--> statement-breakpoint
+INSERT INTO `__new_listings`("id", "title", "description", "price", "location", "latitude", "longitude", "image", "created_at") SELECT "id", "title", "description", "price", "location", "latitude", "longitude", "image", "created_at" FROM `listings`;--> statement-breakpoint
 DROP TABLE `listings`;--> statement-breakpoint
 ALTER TABLE `__new_listings` RENAME TO `listings`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;--> statement-breakpoint
@@ -22,7 +20,7 @@ CREATE TABLE `__new_messages` (
 	`sender_id` text NOT NULL,
 	`receiver_id` text NOT NULL,
 	`content` text NOT NULL,
-	`created_at` integer DEFAULT 1747398025630,
+	`created_at` integer DEFAULT 1747995401473,
 	FOREIGN KEY (`sender_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`receiver_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -36,16 +34,20 @@ CREATE TABLE `__new_reservations` (
 	`user_id` text NOT NULL,
 	`start_date` text NOT NULL,
 	`end_date` text NOT NULL,
+	`adults` integer NOT NULL,
+	`children` integer DEFAULT 0 NOT NULL,
+	`babies` integer DEFAULT 0 NOT NULL,
+	`pets` integer DEFAULT 0 NOT NULL,
 	`guests` integer NOT NULL,
 	`total_price` real NOT NULL,
 	`status` text DEFAULT 'confirmed',
 	`cancellation_reason` text,
-	`created_at` integer DEFAULT 1747398025630,
+	`created_at` integer DEFAULT 1747995401472,
 	FOREIGN KEY (`listing_id`) REFERENCES `listings`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-INSERT INTO `__new_reservations`("id", "listing_id", "user_id", "start_date", "end_date", "guests", "total_price", "status", "cancellation_reason", "created_at") SELECT "id", "listing_id", "user_id", "start_date", "end_date", "guests", "total_price", "status", "cancellation_reason", "created_at" FROM `reservations`;--> statement-breakpoint
+INSERT INTO `__new_reservations`("id", "listing_id", "user_id", "start_date", "end_date", "adults", "children", "babies", "pets", "guests", "total_price", "status", "cancellation_reason", "created_at") SELECT "id", "listing_id", "user_id", "start_date", "end_date", "adults", "children", "babies", "pets", "guests", "total_price", "status", "cancellation_reason", "created_at" FROM `reservations`;--> statement-breakpoint
 DROP TABLE `reservations`;--> statement-breakpoint
 ALTER TABLE `__new_reservations` RENAME TO `reservations`;--> statement-breakpoint
 CREATE TABLE `__new_reviews` (
@@ -54,7 +56,7 @@ CREATE TABLE `__new_reviews` (
 	`user_id` text NOT NULL,
 	`rating` real NOT NULL,
 	`comment` text,
-	`created_at` integer DEFAULT 1747398025630,
+	`created_at` integer DEFAULT 1747995401473,
 	FOREIGN KEY (`listing_id`) REFERENCES `listings`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -68,7 +70,7 @@ CREATE TABLE `__new_users` (
 	`name` text,
 	`image` text,
 	`role` text DEFAULT 'client',
-	`created_at` integer DEFAULT 1747398025629
+	`created_at` integer DEFAULT 1747995401472
 );
 --> statement-breakpoint
 INSERT INTO `__new_users`("id", "email", "name", "image", "role", "created_at") SELECT "id", "email", "name", "image", "role", "created_at" FROM `users`;--> statement-breakpoint
@@ -78,7 +80,7 @@ CREATE TABLE `__new_wishlists` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`user_id` text NOT NULL,
-	`created_at` integer DEFAULT 1747398025630,
+	`created_at` integer DEFAULT 1747995401473,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

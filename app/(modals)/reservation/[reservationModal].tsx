@@ -1,11 +1,50 @@
 import { Colors } from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import * as SQLite from "expo-sqlite";
+import { eq } from "drizzle-orm";
+import { reservations } from "@/db/schema";
+import { useEffect, useState } from "react";
+import { calculateNumberOfNights } from "@/lib/calculate-number-of-nights";
+
+const db = drizzle(SQLite.openDatabaseSync("db.db"));
 
 export default function ReservationModal() {
-  const { price } = useLocalSearchParams();
-  const numberOfNights = 4;
-  const totalPrice = price * numberOfNights;
+  const { id, price } = useLocalSearchParams();
+  const [dateReservation, setDateReservation] = useState<null | {
+    startDate: string;
+    endDate: string;
+  }>(null);
+
+  useEffect(() => {
+    const fetchReservation = async () => {
+      const result = db
+        .select({
+          startDate: reservations.startDate,
+          endDate: reservations.endDate,
+        })
+        .from(reservations)
+        .where(eq(reservations.listingId, id))
+        .limit(1)
+        .get();
+
+      if (result) {
+        setDateReservation(result);
+      }
+    };
+
+    fetchReservation();
+  }, [id]);
+
+  const numberOfNights = dateReservation
+    ? calculateNumberOfNights({
+        start: dateReservation.startDate,
+        end: dateReservation.endDate,
+      })
+    : 0;
+
+  const totalPrice = Number(price) * numberOfNights;
   const serviceAirbnb = Math.ceil(totalPrice * 0.2);
   const totalPriceBeforeTaxes = totalPrice + serviceAirbnb;
 
@@ -118,7 +157,7 @@ export default function ReservationModal() {
             color: "white",
           }}
         >
-          Réserver
+          Fermer
         </Text>
       </Pressable>
     </View>

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "4fe82a90-a317-4bad-be54-3e81a33c5a1d",
+  "id": "94010aa0-b31a-4ca8-bcfd-d8d47880624f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "amenities": {
@@ -205,38 +205,17 @@
           "notNull": false,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375704
+          "default": 1747994340521
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "listings_user_id_users_id_fk": {
-          "name": "listings_user_id_users_id_fk",
-          "tableFrom": "listings",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -278,7 +257,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375705
+          "default": 1747994340521
         }
       },
       "indexes": {},
@@ -352,6 +331,37 @@
           "notNull": true,
           "autoincrement": false
         },
+        "adults": {
+          "name": "adults",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "children": {
+          "name": "children",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "babies": {
+          "name": "babies",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "pets": {
+          "name": "pets",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
         "guests": {
           "name": "guests",
           "type": "integer",
@@ -387,7 +397,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375705
+          "default": 1747994340521
         }
       },
       "indexes": {},
@@ -467,7 +477,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375705
+          "default": 1747994340521
         }
       },
       "indexes": {},
@@ -534,77 +544,26 @@
           "notNull": false,
           "autoincrement": false
         },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'client'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375704
+          "default": 1747994340520
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "wishlist_items": {
-      "name": "wishlist_items",
-      "columns": {
-        "wishlist_id": {
-          "name": "wishlist_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "listing_id": {
-          "name": "listing_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "wishlist_items_wishlist_id_wishlists_id_fk": {
-          "name": "wishlist_items_wishlist_id_wishlists_id_fk",
-          "tableFrom": "wishlist_items",
-          "tableTo": "wishlists",
-          "columnsFrom": [
-            "wishlist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "wishlist_items_listing_id_listings_id_fk": {
-          "name": "wishlist_items_listing_id_listings_id_fk",
-          "tableFrom": "wishlist_items",
-          "tableTo": "listings",
-          "columnsFrom": [
-            "listing_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "wishlist_items_wishlist_id_listing_id_pk": {
-          "columns": [
-            "wishlist_id",
-            "listing_id"
-          ],
-          "name": "wishlist_items_wishlist_id_listing_id_pk"
-        }
-      },
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
@@ -638,7 +597,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": 1747395375705
+          "default": 1747994340521
         }
       },
       "indexes": {},

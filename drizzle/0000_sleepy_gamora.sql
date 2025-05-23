@@ -28,9 +28,7 @@ CREATE TABLE `listings` (
 	`latitude` real,
 	`longitude` real,
 	`image` text,
-	`user_id` text NOT NULL,
-	`created_at` integer DEFAULT 1747395375704,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+	`created_at` integer DEFAULT 1747994340521
 );
 --> statement-breakpoint
 CREATE TABLE `messages` (
@@ -38,7 +36,7 @@ CREATE TABLE `messages` (
 	`sender_id` text NOT NULL,
 	`receiver_id` text NOT NULL,
 	`content` text NOT NULL,
-	`created_at` integer DEFAULT 1747395375705,
+	`created_at` integer DEFAULT 1747994340521,
 	FOREIGN KEY (`sender_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`receiver_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -49,11 +47,15 @@ CREATE TABLE `reservations` (
 	`user_id` text NOT NULL,
 	`start_date` text NOT NULL,
 	`end_date` text NOT NULL,
+	`adults` integer NOT NULL,
+	`children` integer DEFAULT 0 NOT NULL,
+	`babies` integer DEFAULT 0 NOT NULL,
+	`pets` integer DEFAULT 0 NOT NULL,
 	`guests` integer NOT NULL,
 	`total_price` real NOT NULL,
 	`status` text DEFAULT 'confirmed',
 	`cancellation_reason` text,
-	`created_at` integer DEFAULT 1747395375705,
+	`created_at` integer DEFAULT 1747994340521,
 	FOREIGN KEY (`listing_id`) REFERENCES `listings`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -64,7 +66,7 @@ CREATE TABLE `reviews` (
 	`user_id` text NOT NULL,
 	`rating` real NOT NULL,
 	`comment` text,
-	`created_at` integer DEFAULT 1747395375705,
+	`created_at` integer DEFAULT 1747994340521,
 	FOREIGN KEY (`listing_id`) REFERENCES `listings`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -74,21 +76,14 @@ CREATE TABLE `users` (
 	`email` text NOT NULL,
 	`name` text,
 	`image` text,
-	`created_at` integer DEFAULT 1747395375704
-);
---> statement-breakpoint
-CREATE TABLE `wishlist_items` (
-	`wishlist_id` integer NOT NULL,
-	`listing_id` integer NOT NULL,
-	PRIMARY KEY(`wishlist_id`, `listing_id`),
-	FOREIGN KEY (`wishlist_id`) REFERENCES `wishlists`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`listing_id`) REFERENCES `listings`(`id`) ON UPDATE no action ON DELETE no action
+	`role` text DEFAULT 'client',
+	`created_at` integer DEFAULT 1747994340520
 );
 --> statement-breakpoint
 CREATE TABLE `wishlists` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`user_id` text NOT NULL,
-	`created_at` integer DEFAULT 1747395375705,
+	`created_at` integer DEFAULT 1747994340521,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );

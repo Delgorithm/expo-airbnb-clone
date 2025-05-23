@@ -26,9 +26,6 @@ export const listings = sqliteTable("listings", {
   latitude: real("latitude"),
   longitude: real("longitude"),
   image: text("image"),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id),
   createdAt: integer("created_at", { mode: "timestamp" }).default(Date.now()),
 });
 
@@ -43,6 +40,10 @@ export const reservations = sqliteTable("reservations", {
     .references(() => users.id),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
+  adults: integer("adults").notNull(),
+  children: integer("children").notNull().default(0),
+  babies: integer("babies").notNull().default(0),
+  pets: integer("pets").notNull().default(0),
   guests: integer("guests").notNull(),
   totalPrice: real("total_price").notNull(),
   status: text("status").default("confirmed"),
@@ -124,19 +125,3 @@ export const wishlists = sqliteTable("wishlists", {
     .references(() => users.id),
   createdAt: integer("created_at", { mode: "timestamp" }).default(Date.now()),
 });
-
-// WISHLIT ITEMS
-export const wishlistItems = sqliteTable(
-  "wishlist_items",
-  {
-    wishlistId: integer("wishlist_id")
-      .notNull()
-      .references(() => wishlists.id),
-    listingId: integer("listing_id")
-      .notNull()
-      .references(() => listings.id),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.wishlistId, table.listingId] }),
-  }),
-);
