@@ -5,8 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as SQLite from "expo-sqlite";
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
 const db = drizzle(SQLite.openDatabaseSync("db.db"));
@@ -23,23 +23,30 @@ export default function FooterBtn({ listing }: FooterBtnProps) {
   const { user } = useUser();
   const [hasReservation, setHasReservation] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchReservation = async () => {
-      const result = db
-        .select({
-          listingId: reservations.listingId,
-        })
-        .from(reservations)
-        .where(eq(reservations.listingId, listing.id))
-        .limit(1)
-        .get();
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+      const fetchReservation = async () => {
+        const result = db
+          .select({
+            listingId: reservations.listingId,
+          })
+          .from(reservations)
+          .where(eq(reservations.listingId, listing.id))
+          .limit(1)
+          .get();
 
-      if (result) {
-        setHasReservation(result);
-      }
-    };
-    fetchReservation();
-  }, [listing.id]);
+        if (isActive) {
+          setHasReservation(result);
+        }
+      };
+      fetchReservation();
+
+      return () => {
+        isActive = false;
+      };
+    }, [listing.id]),
+  );
 
   if (!listing || !listing.price || !listing.title) return null;
 
