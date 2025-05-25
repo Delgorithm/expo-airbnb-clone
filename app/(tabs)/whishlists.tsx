@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { eq } from "drizzle-orm";
@@ -60,7 +60,10 @@ export default function Wishlist() {
     </View>
   ) : (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Aucun favori</Text>
+      <Image
+        source={require("@/assets/images/nothing-here.png")}
+        style={{ height: 300, width: 300 }}
+      />
     </View>
   );
 }
