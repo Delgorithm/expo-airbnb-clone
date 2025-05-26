@@ -119,7 +119,11 @@ export const favoriteListings = sqliteTable(
 //WISHLIST
 export const wishlists = sqliteTable("wishlists", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
+  title: text("title").notNull(),
+  location: text("location"),
+  latitude: real("latitude"),
+  longitude: real("longitude"),
+  image: text("image"),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
