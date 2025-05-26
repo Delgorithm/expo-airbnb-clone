@@ -1,5 +1,3 @@
-import { calculateNumberOfNights } from "@/lib/calculateNumberOfNights";
-import formatDateFr from "@/lib/formatDateFr";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { faker } from "@faker-js/faker";
 import { Image } from "expo-image";
@@ -7,6 +5,10 @@ import { router } from "expo-router";
 import { Control, useWatch } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import Separator from "../ui/separator";
+import formatDateFr from "@/lib/format-date-fr";
+import { calculateNumberOfNights } from "@/lib/calculate-number-of-nights";
+import { useUser } from "@/lib/clerk";
+import { insertReservation } from "@/db/accessData/insertReservation";
 
 type SummaryFormStepProps = {
   control: Control<any>;
@@ -14,19 +16,52 @@ type SummaryFormStepProps = {
   setStep: React.Dispatch<
     React.SetStateAction<"calendar" | "guests" | "summary">
   >;
+  listing: {
+    id: number;
+    title: string;
+    city: string;
+    price: number;
+  };
 };
 
 export default function SummaryFormStep({
   control,
   onConfirm,
   setStep,
+  listing,
 }: SummaryFormStepProps) {
+  const { user } = useUser();
   const startDate = useWatch({ control, name: "startDate" });
   const endDate = useWatch({ control, name: "endDate" });
   const adults = useWatch({ control, name: "adults" });
   const children = useWatch({ control, name: "children" });
   const babies = useWatch({ control, name: "babies" });
   const pets = useWatch({ control, name: "pets" });
+  const price = listing.price;
+  const listingId = listing.id;
+
+  const handleConfirm = async () => {
+    if (!user?.id) return;
+
+    try {
+      await insertReservation({
+        listingId,
+        userId: user.id,
+        startDate,
+        endDate,
+        adults,
+        children,
+        babies,
+        pets,
+        price,
+      });
+      console.log("Réservation enregistrée");
+      onConfirm();
+      router.back();
+    } catch (e) {
+      console.error("Erreur lors de la réservation : ", e);
+    }
+  };
 
   return (
     <View
@@ -70,7 +105,7 @@ export default function SummaryFormStep({
         />
 
         <Text style={{ fontSize: 28, fontWeight: 600, marginVertical: 10 }}>
-          Nom du domaine
+          {listing.title}, {listing.city}
         </Text>
         <View
           style={{
@@ -177,10 +212,7 @@ export default function SummaryFormStep({
         </View>
       </View>
       <Pressable
-        onPress={() => {
-          onConfirm();
-          router.back();
-        }}
+        onPress={handleConfirm}
         style={({ pressed }) => [
           {
             position: "absolute",

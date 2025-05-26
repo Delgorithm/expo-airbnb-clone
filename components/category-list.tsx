@@ -3,6 +3,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { Link } from "expo-router";
 import React from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -22,6 +23,7 @@ export default function CategoryList() {
             gap: 32,
             marginLeft: 32,
             marginVertical: 10,
+            paddingRight: 16,
           }}
         >
           {categoryIcon.map((item, index) => (
@@ -31,12 +33,16 @@ export default function CategoryList() {
                 params: { name: item.slug },
               }}
               key={index}
-              style={{ alignItems: "center", gap: 8 }}
+              style={{ alignItems: "center" }}
               asChild
               push
             >
               <Pressable>
-                <Text>{item.icon}</Text>
+                <Image
+                  source={item.img}
+                  style={{ height: 60, width: 60 }}
+                  contentFit="cover"
+                />
                 <Text style={{ fontWeight: 300 }}>{item.title}</Text>
               </Pressable>
             </Link>
@@ -48,6 +54,7 @@ export default function CategoryList() {
           backgroundColor: "#F2F2F2",
           height: 0.5,
           width: "100%",
+          marginTop: 4,
           shadowColor: "#000",
           shadowOffset: {
             width: 0,
@@ -65,44 +72,39 @@ export default function CategoryList() {
 const categoryIcon = [
   {
     id: 1,
-    title: "Maisonettes",
-    icon: <MaterialIcons name="house-siding" size={32} color="black" />,
-    slug: "maisonettes",
-  },
-  {
-    id: 2,
     title: "Populaire",
-    icon: <FontAwesome6 name="ranking-star" size={32} color="black" />,
+    img: require("@/assets/images/top-medal.png"),
     slug: "populaire",
   },
   {
+    id: 2,
+    title: "Maisonettes",
+    img: require("@/assets/images/house.png"),
+    slug: "maisonettes",
+  },
+
+  {
     id: 3,
     title: "Lac",
-    icon: <FontAwesome6 name="house-flood-water" size={32} color="black" />,
+    img: require("@/assets/images/lakefront-house.png"),
     slug: "lac",
   },
   {
     id: 4,
     title: "Arbre",
-    icon: <FontAwesome6 name="tree" size={32} color="black" />,
+    img: require("@/assets/images/tepee.png"),
     slug: "arbre",
   },
   {
     id: 5,
     title: "Ville",
-    icon: (
-      <MaterialCommunityIcons
-        name="home-city-outline"
-        size={32}
-        color="black"
-      />
-    ),
+    img: require("@/assets/images/city.png"),
     slug: "ville",
   },
   {
     id: 6,
     title: "Cabines",
-    icon: <MaterialIcons name="cabin" size={32} color="black" />,
+    img: require("@/assets/images/wood-house.png"),
     slug: "cabines",
   },
 ];

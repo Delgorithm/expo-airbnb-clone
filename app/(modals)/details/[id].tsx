@@ -66,7 +66,7 @@ export default function DetailsPage() {
         backgroundColor: "white",
       }}
     >
-      <HeaderButtons />
+      <HeaderButtons listing={listing} />
 
       <Animated.ScrollView
         ref={scrollRef}

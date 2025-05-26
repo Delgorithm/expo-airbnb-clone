@@ -1,8 +1,8 @@
 import { Pressable, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { faker } from "@faker-js/faker";
-import { useExpandableText } from "@/hooks/useExpandableText";
 import { Ionicons } from "@expo/vector-icons";
+import { useExpandableText } from "@/hooks/useExpandableText";
 
 type ReviewCardProps = {
   listing: {

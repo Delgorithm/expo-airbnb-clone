@@ -1,5 +1,5 @@
 import { Text, View, Pressable } from "react-native";
-import { Link } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 import { Image } from "expo-image";
 import { faker } from "@faker-js/faker";
 import {
@@ -8,9 +8,18 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
+import * as SQLite from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { eq } from "drizzle-orm";
+import { reservations } from "@/db/schema";
+import { useCallback, useState } from "react";
+import formatDateFr from "@/lib/format-date-fr";
+
+const db = drizzle(SQLite.openDatabaseSync("db.db"));
 
 type MeetYourHostProps = {
   listing: {
+    id: number;
     rating: number;
     reviews: number;
   };
@@ -21,13 +30,51 @@ export default function MeetYourHost({
   listing,
   numberOfYearsAsHost,
 }: MeetYourHostProps) {
+  const [dateReservation, setDateReservation] = useState<null | {
+    startDate: string;
+    endDate: string;
+  }>(null);
+
   if (!listing || !listing.rating || !listing.reviews) return null;
 
   const randomRateAnswer = Math.floor(Math.random() * (100 - 90) + 90);
   const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
+  const redirectionHref = dateReservation
+    ? null
+    : {
+        pathname: "/(modals)/cancellation/[cancellationModal]",
+        params: { cancellationModal: listing.id.toString() },
+      };
+
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+      const fetchReservation = async () => {
+        const result = db
+          .select({
+            startDate: reservations.startDate,
+            endDate: reservations.endDate,
+          })
+          .from(reservations)
+          .where(eq(reservations.listingId, listing.id))
+          .limit(1)
+          .get();
+
+        if (isActive) {
+          setDateReservation(result);
+        }
+      };
+
+      fetchReservation();
+
+      return () => {
+        isActive = false;
+      };
+    }, [listing.id]),
+  );
 
   return (
-    <View style={{ margin: 24, gap: 20, marginTop: 610 }}>
+    <View style={{ margin: 24, gap: 20, marginTop: 600 }}>
       <Text style={{ fontSize: 20, fontWeight: 500 }}>
         Rencontrez votre hote
       </Text>
@@ -123,7 +170,9 @@ export default function MeetYourHost({
       <View style={{ gap: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <FontAwesome5 name="heart" size={20} />
-          <Text style={{ fontSize: 16 }}>J'aime: {faker.book.series()}</Text>
+          <Text style={{ fontSize: 16 }}>
+            J&apos;aime: {faker.book.series()}
+          </Text>
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
@@ -183,7 +232,7 @@ export default function MeetYourHost({
       <Link
         href={{
           pathname: "/(modals)/form/[formModal]",
-          params: { formModal: "Disponibilités" },
+          params: { formModal: listing.id.toString() },
         }}
         style={{
           flexDirection: "row",
@@ -209,17 +258,21 @@ export default function MeetYourHost({
             <Text style={{ fontSize: 20, fontWeight: 500 }}>
               Disponibilitées
             </Text>
-            <Text style={{ fontWeight: 200 }}>Date</Text>
+            {dateReservation ? (
+              <Text style={{ fontWeight: 200 }}>
+                {formatDateFr({ dateString: dateReservation.startDate })} -{" "}
+                {formatDateFr({ dateString: dateReservation.endDate })}
+              </Text>
+            ) : (
+              <Text style={{ fontWeight: 200 }}>Dates de réservation</Text>
+            )}
           </View>
           <FontAwesome6 name="chevron-right" size={20} />
         </Pressable>
       </Link>
 
       <Link
-        href={{
-          pathname: "/(modals)/cancellation/[cancellationModal]",
-          params: { cancellationModal: "Annulation" },
-        }}
+        href={{ redirectionHref }}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -241,10 +294,19 @@ export default function MeetYourHost({
         >
           <View style={{ gap: 10 }}>
             <Text style={{ fontSize: 20, fontWeight: 500 }}>Annulation</Text>
-            <Text style={{ fontWeight: 200, width: 300 }}>
-              L'annulation est gratuite avant &apos;&apos;. Annuler avant
-              &apos;&apos; pour recevoir une remboursement partiel
-            </Text>
+
+            {dateReservation ? (
+              <Text style={{ fontWeight: 200, width: 300 }}>
+                L&apos;annulation est gratuite 72 heures avant l'arivée. Annuler
+                avant le{" "}
+                {formatDateFr({ dateString: dateReservation.startDate })} pour
+                recevoir une remboursement partiel
+              </Text>
+            ) : (
+              <Text style={{ fontWeight: 200, width: 300 }}>
+                L&apos;annulation est gratuite 72 heures avant l'arrivée
+              </Text>
+            )}
           </View>
           <FontAwesome6 name="chevron-right" size={20} />
         </Pressable>

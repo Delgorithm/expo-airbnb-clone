@@ -4,11 +4,18 @@ import { useState } from "react";
 import CalendarFormStep from "@/components/form/calendar-form-step";
 import GuestFormStep from "@/components/form/guest-form-step";
 import SummaryFormStep from "@/components/form/summary-form-step";
+import { useLocalSearchParams } from "expo-router";
+import listings from "@/assets/data/listings.json";
 
 export default function ReservationModal() {
   const [step, setStep] = useState<"calendar" | "guests" | "summary">(
     "calendar",
   );
+
+  const { formModal } = useLocalSearchParams();
+  const listingId = parseInt(formModal as string);
+  const listing = listings.find((l) => l.id === listingId);
+  if (!listing) return null;
 
   const { control, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
@@ -52,6 +59,7 @@ export default function ReservationModal() {
           getValues={getValues}
           setStep={setStep}
           onConfirm={onConfirm}
+          listing={listing}
         />
       )}
     </SafeAreaView>
