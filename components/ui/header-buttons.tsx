@@ -16,6 +16,8 @@ type HeaderButtonsProps = {
     title: string;
     city: string;
     country: string;
+    latitude: number;
+    longitude: number;
   };
 };
 
@@ -32,7 +34,10 @@ export default function HeaderButtons({ listing }: HeaderButtonsProps) {
         .select()
         .from(wishlists)
         .where(
-          and(eq(wishlists.userId, user.id), eq(wishlists.name, listing.title)),
+          and(
+            eq(wishlists.userId, user.id),
+            eq(wishlists.title, listing.title),
+          ),
         )
         .get();
 
@@ -49,14 +54,17 @@ export default function HeaderButtons({ listing }: HeaderButtonsProps) {
       .select()
       .from(wishlists)
       .where(
-        and(eq(wishlists.userId, user.id), eq(wishlists.name, listing.title)),
+        and(eq(wishlists.userId, user.id), eq(wishlists.title, listing.title)),
       )
       .get();
 
     if (existing) {
       db.delete(wishlists)
         .where(
-          and(eq(wishlists.userId, user.id), eq(wishlists.name, listing.title)),
+          and(
+            eq(wishlists.userId, user.id),
+            eq(wishlists.title, listing.title),
+          ),
         )
         .run();
 
@@ -64,7 +72,11 @@ export default function HeaderButtons({ listing }: HeaderButtonsProps) {
     } else {
       db.insert(wishlists)
         .values({
-          name: listing.title,
+          title: listing.title,
+          location: listing.city,
+          latitude: listing.latitude,
+          longitude: listing.longitude,
+          image: listing.image,
           userId: user.id,
           createdAt: new Date(),
         })

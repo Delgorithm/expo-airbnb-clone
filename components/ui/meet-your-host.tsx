@@ -12,7 +12,7 @@ import * as SQLite from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { eq } from "drizzle-orm";
 import { reservations } from "@/db/schema";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import formatDateFr from "@/lib/format-date-fr";
 
 const db = drizzle(SQLite.openDatabaseSync("db.db"));
@@ -39,6 +39,12 @@ export default function MeetYourHost({
 
   const randomRateAnswer = Math.floor(Math.random() * (100 - 90) + 90);
   const randomGuestAllowed = Math.floor(Math.random() * 6 + 1);
+  const redirectionHref = dateReservation
+    ? null
+    : {
+        pathname: "/(modals)/cancellation/[cancellationModal]",
+        params: { cancellationModal: listing.id.toString() },
+      };
 
   useFocusEffect(
     useCallback(() => {
@@ -266,10 +272,7 @@ export default function MeetYourHost({
       </Link>
 
       <Link
-        href={{
-          pathname: "/(modals)/cancellation/[cancellationModal]",
-          params: { cancellationModal: listing.id.toString() },
-        }}
+        href={{ redirectionHref }}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -294,13 +297,14 @@ export default function MeetYourHost({
 
             {dateReservation ? (
               <Text style={{ fontWeight: 200, width: 300 }}>
-                L&apos;annulation est gratuite 72 heures avant. Annuler avant le{" "}
+                L&apos;annulation est gratuite 72 heures avant l'arivée. Annuler
+                avant le{" "}
                 {formatDateFr({ dateString: dateReservation.startDate })} pour
                 recevoir une remboursement partiel
               </Text>
             ) : (
               <Text style={{ fontWeight: 200, width: 300 }}>
-                L&apos;annulation est gratuite 72 heures avant
+                L&apos;annulation est gratuite 72 heures avant l'arrivée
               </Text>
             )}
           </View>

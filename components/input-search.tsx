@@ -1,7 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, TextInput, View } from "react-native";
 
-export default function InputSearch() {
+type InputSearchProps = {
+  onChange: (text: string) => void;
+};
+
+export default function InputSearch({ onChange }: InputSearchProps) {
   return (
     <View
       style={{
@@ -36,6 +40,7 @@ export default function InputSearch() {
       >
         <Ionicons name="search-outline" size={24} color={"black"} />
         <TextInput
+          onChangeText={onChange}
           style={{
             paddingVertical: 18,
             width: "94%",
