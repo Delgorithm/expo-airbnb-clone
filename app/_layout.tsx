@@ -20,7 +20,7 @@ export default function RootLayout() {
 
   if (error)
     throw new Error("Erreur lors d'initialisation de la base de données");
-  if (!success) console.log("Initialisation de la BDD en cours");
+  if (!success) null;
 
   if (!publishableKey) {
     throw new Error("Add Publishable Key");

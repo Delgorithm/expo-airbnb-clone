@@ -6,10 +6,9 @@ import { faker } from "@faker-js/faker";
 interface LegendListCardProps {
   title: string;
   city: string;
-  country: string;
   price: number;
   rating: number;
-  image: string;
+  reviews: number;
 }
 
 const blurhash =
@@ -18,10 +17,9 @@ const blurhash =
 export default function LegendListCard({
   title,
   city,
-  country,
   price,
   rating,
-  image,
+  reviews,
 }: LegendListCardProps) {
   return (
     <View
@@ -29,7 +27,7 @@ export default function LegendListCard({
         width: "90%",
         height: 430,
         alignSelf: "center",
-        marginVertical: 26,
+        marginTop: 10,
       }}
     >
       <Image
@@ -54,16 +52,10 @@ export default function LegendListCard({
             <Text style={{ fontWeight: 500 }}>
               {title}, {city}
             </Text>
-            <View style={{ gap: 2 }}>
-              <Text style={{ fontWeight: 200 }}>
-                Entire rental unit in Paris, {country}
-              </Text>
-              <Text style={{ fontWeight: 200 }}>4 beds</Text>
-            </View>
 
             <View style={{ flexDirection: "row", gap: 4, marginTop: 6 }}>
               <Text style={{ fontWeight: 500 }}>{price}€</Text>
-              <Text style={{ fontWeight: 300 }}>total before taxes</Text>
+              <Text style={{ fontWeight: 300 }}>total avant les taxes</Text>
             </View>
           </View>
 
@@ -72,7 +64,7 @@ export default function LegendListCard({
           >
             <Ionicons name="star" />
             <Text>{rating}</Text>
-            <Text>(69)</Text>
+            <Text>({reviews})</Text>
           </View>
         </View>
       </View>

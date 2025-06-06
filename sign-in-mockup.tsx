@@ -1,0 +1,62 @@
+import { useSignIn } from "@clerk/clerk-expo";
+import { Link, useRouter } from "expo-router";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export default function Page() {
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter();
+
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSignInPress = async () => {
+    if (!isLoaded) return;
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("/");
+      } else {
+        console.error(JSON.stringify(signInAttempt, null, 2));
+      }
+    } catch (err) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text style={{ alignSelf: "center", fontSize: 24, fontWeight: 600 }}>
+        AirBnb
+      </Text>
+      <TextInput
+        autoCapitalize="none"
+        value={emailAddress}
+        placeholder="Enter email"
+        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+      />
+      <TextInput
+        value={password}
+        placeholder="Enter password"
+        secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+      />
+      <TouchableOpacity onPress={onSignInPress}>
+        <Text>Continue</Text>
+      </TouchableOpacity>
+      <View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
+        <Text>Don't have an account?</Text>
+        <Link href="/sign-up">
+          <Text>Sign up</Text>
+        </Link>
+      </View>
+    </SafeAreaView>
+  );
+}
