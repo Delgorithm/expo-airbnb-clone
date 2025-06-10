@@ -1,6 +1,6 @@
 import { database, appwriteConfig, client } from "@/lib/appwrite";
 import { useUser } from "@/lib/clerk";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import { LegendList } from "@legendapp/list";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
@@ -32,6 +32,8 @@ export default function RoomId() {
   const [isLoading, setIsLoading] = useState(true);
   const headerHeight = Platform.OS === "ios" ? useHeaderHeight() : 0;
   const textInputRef = useRef<TextInput>(null);
+  const email = user.primaryEmailAddress?.emailAddress ?? "";
+  const pseudo = email.split("@")[0];
 
   useEffect(() => {
     handleFirstLoad();
@@ -104,7 +106,7 @@ export default function RoomId() {
     const message = {
       content: messageContent,
       senderId: user?.id!,
-      senderName: user?.fullName ?? "Anonymous",
+      senderName: pseudo || "Anonymous",
       senderPhoto: user?.imageUrl ?? "",
       chatRoomId: chatRoomId as string,
     };
@@ -151,7 +153,7 @@ export default function RoomId() {
                 params: { chat: chatRoomId as string },
               }}
             >
-              <Text>Détails</Text>
+              <FontAwesome name="gear" size={18} color="black" />
             </Link>
           ),
         }}
@@ -175,18 +177,12 @@ export default function RoomId() {
                     alignItems: "flex-end",
                     gap: 6,
                     maxWidth: "80%",
-                    alignSelf: isSender ? "flex-end" : "flex-start",
+                    alignSelf: isSender ? "flex-start" : "flex-end",
                   }}
                 >
-                  {!isSender && (
-                    <Image
-                      source={{ uri: item.senderPhoto }}
-                      style={{ width: 30, height: 30, borderRadius: 15 }}
-                    />
-                  )}
                   <View
                     style={{
-                      backgroundColor: isSender ? "blue" : "red",
+                      backgroundColor: isSender ? "#DEDEDE" : "#FDFDFD",
                       flex: 1,
                       padding: 10,
                       borderRadius: 10,
@@ -203,6 +199,12 @@ export default function RoomId() {
                       })}
                     </Text>
                   </View>
+                  {!isSender && (
+                    <Image
+                      source={{ uri: item.senderPhoto }}
+                      style={{ width: 30, height: 30, borderRadius: 15 }}
+                    />
+                  )}
                 </View>
               );
             }}

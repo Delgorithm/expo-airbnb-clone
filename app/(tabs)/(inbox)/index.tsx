@@ -140,7 +140,14 @@ export default function Inbox() {
         Messages
       </Text>
 
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 12,
+        }}
+      >
         {["all", "trips", "support"].map((item) => (
           <Pressable
             key={item}
