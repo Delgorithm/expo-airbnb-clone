@@ -3,7 +3,11 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 
-export default function SecondBadge() {
+type SecondBadgeProps = {
+  numberOfYearsAsHost: number;
+};
+
+export default function SecondBadge({ numberOfYearsAsHost }: SecondBadgeProps) {
   return (
     <React.Fragment>
       <View
@@ -44,7 +48,9 @@ export default function SecondBadge() {
           <Text style={{ fontSize: 20, fontWeight: 400 }}>
             Proposé par Delgorithm
           </Text>
-          <Text style={{ fontWeight: 200 }}>Superhost - 3 ans</Text>
+          <Text style={{ fontWeight: 200 }}>
+            Superhost - {numberOfYearsAsHost} ans
+          </Text>
         </View>
       </View>
     </React.Fragment>

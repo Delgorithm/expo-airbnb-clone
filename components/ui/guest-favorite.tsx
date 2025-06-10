@@ -1,16 +1,24 @@
-import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View } from "react-native";
-import PagerView from "react-native-pager-view";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import ReviewCard from "./review-card";
+import { Image } from "expo-image";
+import houseImage from "@/assets/images/house.png";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 type GuestFavoriteProps = {
   listing: {
     rating: number;
+    reviews: number;
   };
 };
 
 export default function GuestFavorite({ listing }: GuestFavoriteProps) {
   if (!listing || !listing.rating) return null;
+
+  const reviews = Array.from({ length: 5 }).map(() => ({
+    rating: Math.random() * 5,
+    reviews: Math.floor(Math.random() * 100),
+  }));
 
   return (
     <View
@@ -48,35 +56,73 @@ export default function GuestFavorite({ listing }: GuestFavoriteProps) {
             style={{ transform: [{ scaleX: -1 }] }}
           />
 
-          <Text style={{ fontSize: 60, fontWeight: 500 }}>
-            {listing.rating}
-          </Text>
+          <Image source={houseImage} style={{ height: 150, width: 150 }} />
 
           <FontAwesome5 name="leaf" size={50} color="black" />
         </View>
-      </LinearGradient>
+        <View
+          style={{
+            alignSelf: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Text>Dans les favoris</Text>
+          <View style={{ alignItems: "center", gap: 2 }}>
+            <Text style={{ fontWeight: 200 }}>
+              L&apos;un des endroits les plus appréciés sur AirBnb
+            </Text>
+            <Text style={{ fontWeight: 200 }}>
+              se basant sur les notes, les avis et les compatibilités
+            </Text>
+          </View>
+        </View>
 
-      <PagerView initialPage={0}>
-        <View
-          style={{ height: 200, width: 200, backgroundColor: "black" }}
-          key="1"
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{}}
         >
-          <Text>First page</Text>
-          <Text>Swipe ➡️</Text>
-        </View>
-        <View
-          style={{ height: 200, width: 200, backgroundColor: "red" }}
-          key="2"
+          {reviews.map((review, index) => (
+            <ReviewCard key={index} listing={review} />
+          ))}
+        </ScrollView>
+
+        <Pressable
+          style={({ pressed }) => [
+            {
+              marginHorizontal: 24,
+              marginBottom: 26,
+              borderWidth: 0.5,
+              paddingVertical: 12,
+              borderRadius: 8,
+              opacity: pressed ? 0.6 : 1,
+              backgroundColor: pressed ? "gray" : "white",
+            },
+          ]}
         >
-          <Text>Second page</Text>
-        </View>
+          {({ pressed }) => (
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: 16,
+                fontWeight: 500,
+                color: pressed ? "white" : "black",
+              }}
+            >
+              Afficher les {listing.reviews} avis
+            </Text>
+          )}
+        </Pressable>
         <View
-          style={{ height: 200, width: 200, backgroundColor: "green" }}
-          key="3"
-        >
-          <Text>Third page</Text>
-        </View>
-      </PagerView>
+          style={{
+            height: 0.5,
+            backgroundColor: "#E2E2E2",
+            marginHorizontal: 24,
+          }}
+        />
+      </LinearGradient>
     </View>
   );
 }

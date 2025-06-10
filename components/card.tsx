@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { Image } from "expo-image";
+import { faker } from "@faker-js/faker";
 
 interface LegendListCardProps {
   title: string;
@@ -32,7 +33,7 @@ export default function LegendListCard({
       }}
     >
       <Image
-        source={{ uri: image }}
+        source={faker.image.url()}
         placeholder={{ blurhash }}
         contentFit="cover"
         transition={1000}

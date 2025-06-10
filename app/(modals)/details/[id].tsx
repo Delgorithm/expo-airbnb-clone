@@ -1,5 +1,5 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import listings from "@/assets/data/listings.json";
 import Animated, {
   interpolate,
@@ -7,7 +7,6 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from "react-native-reanimated";
-import { Ionicons } from "@expo/vector-icons";
 import GuestFavorite from "@/components/ui/guest-favorite";
 import DisplayMap from "@/components/ui/display-map";
 import WhatItOffers from "@/components/ui/what-it-offers";
@@ -17,6 +16,10 @@ import Informations from "@/components/ui/informations";
 import SecondBadge from "@/components/ui/second-badge";
 import LocationHouse from "@/components/ui/location-house";
 import FooterBtn from "@/components/ui/footer-btn";
+import { faker } from "@faker-js/faker";
+import HeaderButtons from "@/components/ui/header-buttons";
+import Separator from "@/components/ui/separator";
+import MeetYourHost from "@/components/ui/meet-your-host";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -27,6 +30,8 @@ export default function DetailsPage() {
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+
+  const numberOfYearsAsHost = Math.floor(Math.random() * 8 + 1);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -54,69 +59,22 @@ export default function DetailsPage() {
   }
 
   return (
-    <View style={{ flex: 1, position: "relative", backgroundColor: "white" }}>
-      {/* Header btn */}
-      <View>
-        <Pressable
-          onPress={() => router.back()}
-          style={{
-            position: "absolute",
-            top: 56,
-            left: 20,
-            zIndex: 999,
-            borderRadius: 999,
-          }}
-        >
-          <Ionicons
-            name="chevron-back-outline"
-            size={20}
-            color="black"
-            style={{ padding: 8, borderRadius: 999, backgroundColor: "white" }}
-          />
-        </Pressable>
-        <View>
-          <Pressable
-            onPress={() => console.log("Share")}
-            style={{ position: "absolute", top: 56, right: 80, zIndex: 999 }}
-          >
-            <Ionicons
-              name="share-outline"
-              size={20}
-              color="black"
-              style={{
-                padding: 8,
-                borderRadius: 999,
-                backgroundColor: "white",
-              }}
-            />
-          </Pressable>
+    <View
+      style={{
+        flex: 1,
+        position: "relative",
+        backgroundColor: "white",
+      }}
+    >
+      <HeaderButtons listing={listing} />
 
-          <Pressable
-            onPress={() => console.log("Favoris")}
-            style={{ position: "absolute", top: 56, right: 20, zIndex: 999 }}
-          >
-            <Ionicons
-              name="heart-outline"
-              size={20}
-              color="black"
-              style={{
-                padding: 8,
-                borderRadius: 999,
-                backgroundColor: "white",
-              }}
-            />
-          </Pressable>
-        </View>
-      </View>
-
-      {/* Section main content */}
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 600 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         <Animated.Image
-          source={{ uri: listing.image }}
+          source={{ uri: faker.image.urlLoremFlickr() }}
           style={[styles.image, imageAnimatedStyle]}
         />
 
@@ -124,17 +82,9 @@ export default function DetailsPage() {
 
         <FirstBadge listing={listing} />
 
-        {/* Informations & badges */}
+        <SecondBadge numberOfYearsAsHost={numberOfYearsAsHost} />
 
-        <SecondBadge />
-
-        <View
-          style={{
-            height: 0.5,
-            marginHorizontal: 24,
-            backgroundColor: "gray",
-          }}
-        />
+        <Separator />
 
         <Informations />
 
@@ -145,41 +95,26 @@ export default function DetailsPage() {
           aliquip ex ea commodo consequat.
         </Text>
 
-        <View
-          style={{
-            height: 0.5,
-            backgroundColor: "gray",
-          }}
-        />
+        <Separator />
 
-        <WhereYouSleep listing={listing} />
+        <WhereYouSleep />
 
-        <View
-          style={{
-            height: 0.5,
-            backgroundColor: "gray",
-          }}
-        />
+        <Separator />
 
         <WhatItOffers />
 
-        <View
-          style={{
-            height: 0.5,
-            backgroundColor: "gray",
-          }}
-        />
+        <Separator />
 
         <DisplayMap listing={listing} />
 
-        <View
-          style={{
-            height: 0.5,
-            backgroundColor: "gray",
-          }}
-        />
+        <Separator />
 
         <GuestFavorite listing={listing} />
+
+        <MeetYourHost
+          listing={listing}
+          numberOfYearsAsHost={numberOfYearsAsHost}
+        />
       </Animated.ScrollView>
 
       <FooterBtn listing={listing} />
