@@ -54,7 +54,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="inbox"
+        name="(inbox)"
         options={{
           title: "Messages",
           headerShown: false,
