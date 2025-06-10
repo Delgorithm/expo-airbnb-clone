@@ -8,13 +8,19 @@ import {
 import listings from "@/assets/data/listings.json";
 import LegendListCard from "@/components/card";
 import InputSearch from "@/components/input-search";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import CategoryList from "@/components/category-list";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 const PAGE_SIZE = 10;
 
 export default function Page() {
+  const { isSignedIn, isLoaded } = useUser();
+
+  if (!isLoaded) return null;
+  if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
+
   const listRef = useRef<LegendListRef>(null);
   const [page, setPage] = useState(1);
   const [visibleData, setVisibleData] = useState(listings.slice(0, PAGE_SIZE));
@@ -56,10 +62,9 @@ export default function Page() {
           <LegendListCard
             title={item.title}
             city={item.city}
-            country={item.country}
             price={item.price}
             rating={item.rating}
-            image={item.image}
+            reviews={item.reviews}
           />
         </Pressable>
       </Link>
@@ -70,7 +75,7 @@ export default function Page() {
     <View
       style={{
         flex: 1,
-        paddingTop: 48,
+        paddingTop: 60,
         backgroundColor: "white",
       }}
     >

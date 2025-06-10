@@ -8,6 +8,8 @@ import { Entypo, FontAwesome } from "@expo/vector-icons";
 import Separator from "@/components/ui/separator";
 import { eq } from "drizzle-orm";
 import ParametersList from "@/components/profile/parameters";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 
 const expo = SQLite.openDatabaseSync("db.db");
 
@@ -23,17 +25,20 @@ const parameters = [
 
 export default function Profile() {
   const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) return <Redirect href="/" />;
+
   const { user } = useUser();
   const userInDB = db.select().from(users).where(eq(users.id, user.id)).get();
 
-  if (!isSignedIn) return <Redirect href="/(auth)/sign-in" />;
+  const email = user.primaryEmailAddress?.emailAddress ?? "";
+  const pseudo = email.split("@")[0];
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        gap: 32,
-        marginTop: 80,
+        gap: 16,
         marginHorizontal: 24,
       }}
     >
@@ -57,11 +62,11 @@ export default function Profile() {
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 24 }}>
           <Image
-            source={{ uri: userInDB?.image }}
-            style={{ height: 60, width: 60, borderRadius: 9999 }}
+            source={{ uri: user?.imageUrl }}
+            style={{ height: 80, width: 80, borderRadius: 9999 }}
           />
           <View>
-            <Text style={{ fontSize: 20 }}>{userInDB?.name}</Text>
+            <Text style={{ fontSize: 20 }}>{pseudo}</Text>
             <Text style={{ fontWeight: 300 }}>Voir le profile</Text>
           </View>
         </View>
@@ -82,7 +87,7 @@ export default function Profile() {
           borderColor: "#cfcfcf",
         }}
       >
-        <View style={{ width: "65%", gap: 14 }}>
+        <View style={{ width: "65%", gap: 10 }}>
           <Text style={{ fontSize: 20, fontWeight: 500 }}>
             Votre maison Airbnb
           </Text>
@@ -113,6 +118,7 @@ export default function Profile() {
           </Link>
         ))}
       </View>
-    </View>
+      <SignOutButton />
+    </SafeAreaView>
   );
 }
